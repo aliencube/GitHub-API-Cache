@@ -1,5 +1,4 @@
 ﻿using Aliencube.AlienCache.WebApi;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Net;
@@ -8,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Web.Http;
 
-namespace GitHub.Cache.WebApi.Controllers
+namespace Aliencube.GitHub.Cache.WebApi.Controllers
 {
     public class RefController : ApiController
     {
@@ -39,8 +38,11 @@ namespace GitHub.Cache.WebApi.Controllers
 
                 var accepts = Request.Headers.Accept.ToList();
                 if (!accepts.Any())
+                {
                     accepts.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
+                }
                 client.Headers.Add(HttpRequestHeader.Accept, String.Join(",", accepts));
+
                 try
                 {
                     var url = String.Format(REF_URL, user, repo, branch);
@@ -49,39 +51,30 @@ namespace GitHub.Cache.WebApi.Controllers
                     {
                         return Request.CreateResponse(HttpStatusCode.InternalServerError);
                     }
-                    var json = JObject.Parse(value);
-                    var result = json.SelectToken("message");
-                    if (result != null)
-                    {
-                        return Request.CreateResponse(HttpStatusCode.InternalServerError);
-                    }
-                    result = json.SelectToken("object");
-                    if (result == null)
-                    {
-                        return Request.CreateResponse(HttpStatusCode.InternalServerError);
-                    }
-                    var sha = result.SelectToken("sha");
-                    if (sha == null)
-                    {
-                        return Request.CreateResponse(HttpStatusCode.InternalServerError);
-                    }
-                    var content = new StringContent(sha.Value<string>(), Encoding.UTF8, accepts.First().ToString());
+
+                    var content = new StringContent(value, Encoding.UTF8, "application/json");
                     response = Request.CreateResponse(HttpStatusCode.OK);
                     response.Content = content;
                 }
                 catch (Exception ex)
                 {
                     response = Request.CreateResponse(HttpStatusCode.InternalServerError);
-                    if (ex.GetType() != typeof(WebException))
+                    if (ex.GetType() != typeof (WebException))
+                    {
                         return response;
+                    }
 
                     var webException = ex as WebException;
                     if (webException == null)
+                    {
                         return response;
+                    }
 
                     var webResponse = webException.Response as HttpWebResponse;
                     if (webResponse == null)
+                    {
                         return response;
+                    }
 
                     var statusCode = webResponse.StatusCode;
                     response = Request.CreateResponse(statusCode == null

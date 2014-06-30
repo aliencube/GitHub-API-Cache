@@ -1,7 +1,6 @@
-﻿using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
-namespace GitHub.Cache.WebApi
+namespace Aliencube.GitHub.Cache.WebApi
 {
     public class FilterConfig
     {
