@@ -1,19 +1,16 @@
-﻿using Aliencube.AlienCache.WebApi;
-using System;
+﻿using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Web.Http;
 
 namespace Aliencube.GitHub.Cache.WebApi.Controllers
 {
-    public class RefController : ApiController
+    public class RefController : BaseApiController
     {
         private const string REF_URL = "https://api.github.com/repos/{0}/{1}/git/refs/heads/{2}";
 
-        [WebApiCache()]
         public HttpResponseMessage Get(string user, string repo, string branch)
         {
             if (String.IsNullOrWhiteSpace(user))
@@ -59,7 +56,7 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
                 catch (Exception ex)
                 {
                     response = Request.CreateResponse(HttpStatusCode.InternalServerError);
-                    if (ex.GetType() != typeof (WebException))
+                    if (ex.GetType() != typeof(WebException))
                     {
                         return response;
                     }
