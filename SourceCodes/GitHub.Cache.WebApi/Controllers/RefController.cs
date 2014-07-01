@@ -12,15 +12,13 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
     {
         private const string REF_URL = "https://api.github.com/repos/{0}/{1}/git/refs/heads/{2}";
 
-        private readonly IWebClientService _webClientService;
-
         /// <summary>
         /// Initialises a new instance of the RefController class.
         /// </summary>
         /// <param name="webClientService"><c>WebClientService</c> instance.</param>
         public RefController(IWebClientService webClientService)
+            : base(webClientService)
         {
-            this._webClientService = webClientService;
         }
 
         /// <summary>
@@ -46,7 +44,7 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
             }
 
             var url = String.Format(REF_URL, user, repo, branch);
-            var response = this._webClientService.GetResponse(Request, url);
+            var response = this.WebClientService.GetResponse(Request, url);
             return response;
         }
     }

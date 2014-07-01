@@ -3,6 +3,9 @@ using System.Net.Http;
 
 namespace Aliencube.GitHub.Cache.Services.Interfaces
 {
+    /// <summary>
+    /// This provides interfaces to the WebClientService class.
+    /// </summary>
     public interface IWebClientService
     {
         /// <summary>
