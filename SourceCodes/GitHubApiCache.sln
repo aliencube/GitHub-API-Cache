@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Properties", "Properties", 
 		..\Documents\Properties\SharedAssemblyInfo.cs = ..\Documents\Properties\SharedAssemblyInfo.cs
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHub.Cache.Services", "GitHub.Cache.Services\GitHub.Cache.Services.csproj", "{FB44A488-19D3-4BD5-8A95-5F39449C3A59}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{B7C5F0D1-5A48-4F43-97F1-11571A2D01E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7C5F0D1-5A48-4F43-97F1-11571A2D01E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7C5F0D1-5A48-4F43-97F1-11571A2D01E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB44A488-19D3-4BD5-8A95-5F39449C3A59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB44A488-19D3-4BD5-8A95-5F39449C3A59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB44A488-19D3-4BD5-8A95-5F39449C3A59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB44A488-19D3-4BD5-8A95-5F39449C3A59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
