@@ -1,5 +1,4 @@
-﻿using Aliencube.GitHub.Cache.WebApi.App_Start;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 

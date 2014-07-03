@@ -5,7 +5,7 @@ using Autofac.Integration.WebApi;
 using System.Reflection;
 using System.Web.Http;
 
-namespace Aliencube.GitHub.Cache.WebApi.App_Start
+namespace Aliencube.GitHub.Cache.WebApi
 {
     public class DependencyConfig
     {
