@@ -16,7 +16,7 @@ You can simply send cURL request on a command prompt like:
 $ curl -i https://hook.aliencube.local/api/ref/{user}/{repo}/{branch}
 ```
 
-If you are using [jQuery](http://jquery.com), this can be possible:
+If you are using [jQuery][jquery], this can be possible:
 
 ```javascript
 $.ajax({
@@ -38,7 +38,7 @@ You can simply send cURL request on a command prompt like:
 $ curl -H "Authorization: token OAUTH-TOKEN" https://hook.aliencube.local/api/ref/{user}/{repo}/{branch}
 ```
 
-If you are using [jQuery](http://jquery.com), this can be possible:
+If you are using [jQuery][jquery], this can be possible:
 
 ```javascript
 $.ajax({
@@ -51,6 +51,46 @@ $.ajax({
     // DO STUFF
 });
 ```
+
+
+## Configurations ##
+
+In order to change some configurations, `Web.config` needs to be touched.
+
+```xml
+<applicationSettings>
+    <Aliencube.AlienCache.WebApi.Properties.Settings>
+        <setting name="TimeSpan" serializeAs="String">
+            <value>60</value>
+        </setting>
+        <setting name="UseAbsoluteUrl" serializeAs="String">
+            <value>False</value>
+        </setting>
+    </Aliencube.AlienCache.WebApi.Properties.Settings>
+
+    <Aliencube.GitHub.Cache.Services.Properties.Settings>
+        <setting name="UseProxy" serializeAs="String">
+            <value>False</value>
+        </setting>
+        <setting name="ProxyUrl" serializeAs="String">
+            <value />
+        </setting>
+        <setting name="BypassOnLocal" serializeAs="String">
+            <value>True</value>
+        </setting>
+        <setting name="AuthenticationType" serializeAs="String">
+            <value>Anonymous</value>
+        </setting>
+    </Aliencube.GitHub.Cache.Services.Properties.Settings>
+</applicationSettings>
+```
+
+* `TimeSpan`: Duration for how long the cache value is alive, in seconds. Default value is `60`.
+* `UseAbsoluteUrl`: If it is set to `true`, the cache key will use the fully qualified URL to store cache value. Default value is `false`.
+* `UseProxy`: If your application sits behind a firewall, this value must be set to `true`; otherwise the application will not hit [GitHub][gh] APIs. Default value is `false`.
+* `ProxyUrl`: Proxy server URL. This is necessary, if `UseProxy` value is `true`. If `UseProxy` valus is `false`, this is ignored.
+* `BypassOnLocal`: If it is set to `true` when `UseProxy` value is `true`, all local traffic is bypassed. If `UseProxy` value is `false`, this is ignored.
+* `AuthenticationType`: This determines how [GitHub][gh] API is consumed. This value can be `Anonymous`, `Basic` and `AuthenticationKey`. Default value is `Anonymous`. 
 
 
 ## License ##
@@ -69,3 +109,4 @@ $.ajax({
 > THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 [gh]: http://github.com
+[jquery]: http://jquery.com
