@@ -46,38 +46,38 @@ namespace Aliencube.GitHub.Cache.Services
         public HttpResponseMessage GetResponse(HttpRequestMessage request, Uri uri)
         {
             HttpResponseMessage response;
-            using (var client = new WebClient())
+            try
             {
-                if (this._settings.UseProxy)
+                var validated = this.ValidateRequest(request, uri);
+                if (!validated)
                 {
-                    var proxy = new WebProxy(this._settings.ProxyUrl, this._settings.BypassOnLocal);
-                    client.Proxy = proxy;
+                    throw new InvalidOperationException("Unauthorised");
                 }
 
-                var userAgents = request.Headers.UserAgent.ToList();
-                userAgents.Add(new ProductInfoHeaderValue(this.GetType().Assembly.GetName().Name, this.GetType().Assembly.GetName().Version.ToString()));
-                client.Headers.Add(HttpRequestHeader.UserAgent, String.Join(" ", userAgents));
-
-                var accepts = request.Headers.Accept.ToList();
-                if (!accepts.Any())
+                using (var client = new WebClient())
                 {
-                    accepts.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
-                }
-                client.Headers.Add(HttpRequestHeader.Accept, String.Join(",", accepts));
+                    if (this._settings.UseProxy)
+                    {
+                        var proxy = new WebProxy(this._settings.ProxyUrl, this._settings.BypassOnLocal);
+                        client.Proxy = proxy;
+                    }
 
-                switch (this._settings.AuthenticationType)
-                {
-                    case AuthenticationType.Basic:
-                        uri = this.GetBasicAuthenticationUri(uri.OriginalString);
-                        break;
+                    var userAgents = request.Headers.UserAgent.ToList();
+                    userAgents.Add(new ProductInfoHeaderValue(this.GetType().Assembly.GetName().Name, this.GetType().Assembly.GetName().Version.ToString()));
+                    client.Headers.Add(HttpRequestHeader.UserAgent, String.Join(" ", userAgents));
 
-                    case AuthenticationType.AuthenticationKey:
-                        client.Headers.Add(HttpRequestHeader.Authorization, String.Format("token {0}", this._settings.AutenticationKey));
-                        break;
-                }
+                    var accepts = request.Headers.Accept.ToList();
+                    if (!accepts.Any())
+                    {
+                        accepts.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
+                    }
+                    client.Headers.Add(HttpRequestHeader.Accept, String.Join(",", accepts));
 
-                try
-                {
+                    if (this._settings.AuthenticationType == AuthenticationType.AuthenticationKey)
+                    {
+                        client.Headers.Add(HttpRequestHeader.Authorization, request.Headers.Authorization.ToString());
+                    }
+
                     var value = client.DownloadString(uri);
                     if (String.IsNullOrWhiteSpace(value))
                     {
@@ -88,25 +88,73 @@ namespace Aliencube.GitHub.Cache.Services
                     response = request.CreateResponse(HttpStatusCode.OK);
                     response.Content = content;
                 }
-                catch (Exception ex)
-                {
-                    response = this.GetErrorReponse(request, ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                response = this.GetErrorReponse(request, ex);
             }
             return response;
         }
 
         /// <summary>
-        /// Gets the basic authentication URL with username and password.
+        /// Validates whether the request comes with proper values or not.
         /// </summary>
-        /// <param name="url">URL.</param>
-        /// <returns>Returns the basic authentication URL with username and password.</returns>
-        public Uri GetBasicAuthenticationUri(string url)
+        /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
+        /// <param name="uri"><c>Uri</c> to send the request.</param>
+        /// <returns>Returns <c>True</c>, if the request is valid; otherwise returns <c>False</c>.</returns>
+        public bool ValidateRequest(HttpRequestMessage request, Uri uri)
         {
-            var segments = url.Split(new string[] { "//" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-            segments[1] = String.Format("{0}:{1}@{2}", this._settings.Username, this._settings.Password, segments[1]);
-            var uri = new Uri(String.Join("//", segments));
-            return uri;
+            var validated = true;
+            switch (this._settings.AuthenticationType)
+            {
+                case AuthenticationType.Basic:
+                    validated = this.ValidateBasicAuthentication(uri.OriginalString);
+                    break;
+
+                case AuthenticationType.AuthenticationKey:
+                    validated = this.ValidateAuthorisationHeader(request.Headers.Authorization);
+                    break;
+            }
+
+            return validated;
+        }
+
+        /// <summary>
+        /// Validates whether the username and password are included in the URL segment or not.
+        /// </summary>
+        /// <param name="url">URL segment.</param>
+        /// <returns>Returns <c>True</c>, if the username and password are included in the URL segment; otherwise returns <c>False</c>.</returns>
+        public bool ValidateBasicAuthentication(string url)
+        {
+            var segments = url.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+            var validated = segments[1].Contains(":") && segments[1].Contains("@");
+            return validated;
+        }
+
+        /// <summary>
+        /// Validates whether the authentication key exists in a correct format or not.
+        /// </summary>
+        /// <param name="header">Authentication header value.</param>
+        /// <returns>Returns <c>True</c>, if the authentication key exists in a correct format; otherwise returns <c>False</c>.</returns>
+        public bool ValidateAuthorisationHeader(AuthenticationHeaderValue header)
+        {
+            if (header == null)
+            {
+                return false;
+            }
+
+            var token = header.ToString();
+            if (String.IsNullOrWhiteSpace(token))
+            {
+                return false;
+            }
+
+            if (!token.StartsWith("token "))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>

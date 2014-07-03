@@ -11,7 +11,7 @@
         Anonymous = 0,
 
         /// <summary>
-        /// Identifies basic username and password are used for authentication.
+        /// Identifies basic username and password are used for authentication. Strongly discouraged to use.
         /// </summary>
         Basic = 1,
 
