@@ -13,7 +13,7 @@
 You can simply send cURL request on a command prompt like:
 
 ```shell
-$ curl -i https://hook.aliencube.local/api/ref/{user}/{repo}/{branch}
+$ curl -i https://githubapicache.apphb.com/api/ref/{user}/{repo}/{branch}
 ```
 
 If you are using [jQuery][jquery], this can be possible:
@@ -21,7 +21,7 @@ If you are using [jQuery][jquery], this can be possible:
 ```javascript
 $.ajax({
     type: "GET",
-    url: "https://hook.aliencube.local/api/ref/{user}/{repo}/{branch}",
+    url: "https://githubapicache.apphb.com/api/ref/{user}/{repo}/{branch}",
     dataType: "json"
 })
 .done(function(data) {
@@ -35,7 +35,7 @@ $.ajax({
 You can simply send cURL request on a command prompt like:
 
 ```shell
-$ curl -H "Authorization: token OAUTH-TOKEN" https://hook.aliencube.local/api/ref/{user}/{repo}/{branch}
+$ curl -H "Authorization: token OAUTH-TOKEN" https://githubapicache.apphb.com/api/ref/{user}/{repo}/{branch}
 ```
 
 If you are using [jQuery][jquery], this can be possible:
@@ -43,7 +43,7 @@ If you are using [jQuery][jquery], this can be possible:
 ```javascript
 $.ajax({
     type: "GET",
-    url: "https://hook.aliencube.local/api/ref/{user}/{repo}/{branch}",
+    url: "https://githubapicache.apphb.com/api/ref/{user}/{repo}/{branch}",
     dataType: "json",
     headers: { "Authorization": "token OAUTH-TOKEN" }
 })
