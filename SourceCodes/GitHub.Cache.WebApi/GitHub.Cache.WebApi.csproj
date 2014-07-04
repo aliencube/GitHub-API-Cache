@@ -122,6 +122,7 @@
     </Compile>
     <Compile Include="App_Start\DependencyConfig.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RefController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -132,7 +133,31 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="css\bootstrap-theme.css" />
+    <Content Include="css\bootstrap-theme.min.css" />
+    <Content Include="css\bootstrap.css" />
+    <Content Include="css\bootstrap.min.css" />
+    <Content Include="css\main.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="js\base64.js" />
+    <Content Include="js\base64.min.js" />
+    <Content Include="js\bootstrap-progressbar.js" />
+    <Content Include="js\bootstrap-progressbar.min.js" />
+    <Content Include="js\history.js" />
+    <Content Include="js\history.min.js" />
+    <Content Include="js\jquery.cookie.js" />
+    <Content Include="js\jquery.scrollTo.js" />
+    <Content Include="js\jquery.scrollTo.min.js" />
+    <Content Include="js\jstorage.js" />
+    <Content Include="js\jstorage.min.js" />
+    <Content Include="js\main.js" />
+    <Content Include="js\purl.js" />
+    <Content Include="js\variables.js" />
+    <Content Include="js\vendor\bootstrap.js" />
+    <Content Include="js\vendor\bootstrap.min.js" />
+    <Content Include="js\vendor\jquery-1.11.0.min.js" />
+    <Content Include="js\vendor\modernizr-2.6.2-respond-1.1.0.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -156,7 +181,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\bootstrap-theme.css.map" />
+    <Content Include="css\bootstrap.css.map" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
