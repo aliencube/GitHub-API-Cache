@@ -37,11 +37,25 @@
                 getContents(data);
 
                 count++;
+                getProgressbar((count / pages.length) * 100);
             });
     };
 
     // Gets the contents.
     var getContents = function (data) {
         $("#main-content").html(data);
+    };
+
+    // Gets the progress bar.
+    var getProgressbar = function (progress) {
+        $(".progress-bar").attr("aria-valuenow", progress).css("width", progress + "%");
+        if (progress < 100) {
+            $("#main-content").hide();
+            $("#progress-bar").show();
+        } else {
+            $("#progress-bar").slideUp(1000, function () {
+                $("#main-content").slideDown(2000);
+            });
+        }
     };
 })(jQuery);
