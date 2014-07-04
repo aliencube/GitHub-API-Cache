@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model Aliencube.GitHub.Cache.WebApi.Models.Home.BaseViewModel
+
+<!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -11,7 +13,17 @@
     <title>GitHub API Cache</title>
     <meta name="description" content="GitHub API Cache" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    
+       
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
+ 
     <link rel="stylesheet" href="~/css/bootstrap.min.css" />
     <style>
         body {
@@ -43,8 +55,9 @@
             </div>
 
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav navbar-right">
                     <li><a href="https://developer.github.com/v3/">GitHub API</a></li>
+                    <li><a href="https://github.com/aliencube/GitHub-API-Cache">GitHub Repository</a></li>
                 </ul>
             </div>
         </div>
@@ -58,7 +71,8 @@
         <footer class="text-center">
             <p>
                 <strong>GitHub API Cache</strong> does not have any affiliation with <a href="https://github.com">GitHub</a>.<br />
-                This website is developed and maintained by <a href="https://aliencube.org">Aliencube Community</a>.
+                This website is developed and maintained by <a href="https://aliencube.org">Aliencube Community</a>.<br />
+                Favicon comes from <a href="http://www.iconarchive.com/show/crystal-clear-icons-by-everaldo/App-cache-icon.html">Icon Archive</a>.
             </p>
         </footer>
     </div>
@@ -70,6 +84,7 @@
     <script src="~/js/jquery.scrollTo.min.js"></script>
     <script src="~/js/base64.min.js"></script>
     <script src="~/js/purl.js"></script>
+    <script src="~/js/marked.min.js"></script>
     <script src="~/js/variables.js"></script>
     <script src="~/js/main.js"></script>
     @RenderSection("scripts", required: false)
@@ -82,7 +97,7 @@
                 m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m);
         })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-        ga('create', 'UA-XXXXXXXX-X', 'githubapicache.apphb.com');
+        ga('create', 'UA-@Model.GoogleAnalyticsCode', '@Model.BaseUrl');
         ga('send', 'pageview');
     </script>
 </body>
