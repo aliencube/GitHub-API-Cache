@@ -86,7 +86,6 @@ namespace Aliencube.GitHub.Cache.Services
 
                     var content = this.GetStringContent(value);
                     response = request.CreateResponse(HttpStatusCode.OK);
-                    response.Headers.Add("Access-Control-Allow-Origin", "*");
                     response.Content = content;
                 }
             }
