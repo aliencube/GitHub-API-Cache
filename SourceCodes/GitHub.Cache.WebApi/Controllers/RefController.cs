@@ -22,6 +22,18 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
         }
 
         /// <summary>
+        /// OPTIONS:    /api/ref/{user}/{repo}/{branch}
+        /// </summary>
+        /// <param name="user">GitHub username or organisation name.</param>
+        /// <param name="repo">GitHub repository name. (Case sensitive)</param>
+        /// <param name="branch">Branch name.</param>
+        /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
+        public HttpResponseMessage Options(string user, string repo, string branch)
+        {
+            return Get(user, repo, branch);
+        }
+
+        /// <summary>
         /// GET:    /api/ref/{user}/{repo}/{branch}
         /// </summary>
         /// <param name="user">GitHub username or organisation name.</param>
