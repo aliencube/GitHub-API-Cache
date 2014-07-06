@@ -56,17 +56,34 @@ namespace Aliencube.GitHub.Cache.Services.Interfaces
         HttpResponseMessage GetErrorReponse(HttpRequestMessage request, Exception ex);
 
         /// <summary>
+        /// Checks whether the request contains JSONP callback or not.
+        /// </summary>
+        /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
+        /// <returns>Returns <c>True</c>, if the request contains JSONP callback; otherwise returns <c>False</c>.</returns>
+        bool IsJsonpRequest(HttpRequestMessage request);
+
+        /// <summary>
+        /// Wraps the response message with the callback function specified.
+        /// </summary>
+        /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
+        /// <param name="value">Content value.</param>
+        /// <returns>Returns the response message with the callback function specified.</returns>
+        string WrapJsonpCallback(HttpRequestMessage request, string value);
+
+        /// <summary>
         /// Gets the string content.
         /// </summary>
         /// <param name="value">Content value.</param>
+        /// <param name="mediaType">Media type.</param>
         /// <returns>Returns the string content.</returns>
-        StringContent GetStringContent(string value);
+        StringContent GetStringContent(string value, string mediaType = null);
 
         /// <summary>
         /// Gets the string content.
         /// </summary>
         /// <param name="ex">Exception instance.</param>
+        /// <param name="mediaType">Media type.</param>
         /// <returns>Returns the string content.</returns>
-        StringContent GetStringContent(Exception ex);
+        StringContent GetStringContent(Exception ex, string mediaType = null);
     }
 }

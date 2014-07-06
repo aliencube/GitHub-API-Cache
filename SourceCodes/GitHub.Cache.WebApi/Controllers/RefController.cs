@@ -2,12 +2,14 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Web.Http;
 
 namespace Aliencube.GitHub.Cache.WebApi.Controllers
 {
     /// <summary>
     /// This represents the controller entity for REF API.
     /// </summary>
+    [Route("api/ref/{user}/{repo}/{branch}")]
     public class RefController : BaseApiController
     {
         private const string REF_URL = "https://api.github.com/repos/{0}/{1}/git/refs/heads/{2}";

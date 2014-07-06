@@ -1,6 +1,8 @@
 ﻿using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Newtonsoft.Json.Serialization;
+using WebApiContrib.Formatting.Jsonp;
 
 namespace Aliencube.GitHub.Cache.WebApi
 {
@@ -12,7 +14,14 @@ namespace Aliencube.GitHub.Cache.WebApi
         {
             AreaRegistration.RegisterAllAreas();
 
-            WebApiConfig.Register(GlobalConfiguration.Configuration);
+            GlobalConfiguration.Configure(config =>
+                                          {
+                                              config.MapHttpAttributeRoutes();
+                                              var jsonFormatter = config.Formatters.JsonFormatter;
+                                              jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                                              config.AddJsonpFormatter();
+                                          });
+
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 

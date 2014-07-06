@@ -84,8 +84,15 @@ namespace Aliencube.GitHub.Cache.Services
                         return request.CreateResponse(HttpStatusCode.InternalServerError);
                     }
 
-                    var content = this.GetStringContent(value);
+                    var mediaType = "application/json";
                     response = request.CreateResponse(HttpStatusCode.OK);
+                    if (this.IsJsonpRequest(request))
+                    {
+                        value = this.WrapJsonpCallback(request, value);
+                        mediaType = "text/javascript";
+                    }
+
+                    var content = this.GetStringContent(value, mediaType);
                     response.Content = content;
                 }
             }
@@ -194,13 +201,44 @@ namespace Aliencube.GitHub.Cache.Services
         }
 
         /// <summary>
+        /// Checks whether the request contains JSONP callback or not.
+        /// </summary>
+        /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
+        /// <returns>Returns <c>True</c>, if the request contains JSONP callback; otherwise returns <c>False</c>.</returns>
+        public bool IsJsonpRequest(HttpRequestMessage request)
+        {
+            var qs = request.RequestUri.ParseQueryString();
+            var callback = qs.Get("callback");
+            return !String.IsNullOrWhiteSpace(callback);
+        }
+
+        /// <summary>
+        /// Wraps the response message with the callback function specified.
+        /// </summary>
+        /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
+        /// <param name="value">Content value.</param>
+        /// <returns>Returns the response message with the callback function specified.</returns>
+        public string WrapJsonpCallback(HttpRequestMessage request, string value)
+        {
+            var qs = request.RequestUri.ParseQueryString();
+            var callback = qs.Get("callback");
+            value = String.Format("{0}({1})", callback, value);
+            return value;
+        }
+
+        /// <summary>
         /// Gets the string content.
         /// </summary>
         /// <param name="value">Content value.</param>
+        /// <param name="mediaType">Media type.</param>
         /// <returns>Returns the string content.</returns>
-        public StringContent GetStringContent(string value)
+        public StringContent GetStringContent(string value, string mediaType = null)
         {
-            var content = new StringContent(value, Encoding.UTF8, "application/json");
+            if (String.IsNullOrWhiteSpace(mediaType))
+            {
+                mediaType = "application/json";
+            }
+            var content = new StringContent(value, Encoding.UTF8, mediaType);
             return content;
         }
 
@@ -208,15 +246,20 @@ namespace Aliencube.GitHub.Cache.Services
         /// Gets the string content.
         /// </summary>
         /// <param name="ex">Exception instance.</param>
+        /// <param name="mediaType">Media type.</param>
         /// <returns>Returns the string content.</returns>
-        public StringContent GetStringContent(Exception ex)
+        public StringContent GetStringContent(Exception ex, string mediaType = null)
         {
+            if (String.IsNullOrWhiteSpace(mediaType))
+            {
+                mediaType = "application/json";
+            }
             var json = new JObject
             {
                 {"message", ex.Message},
                 {"moreInfo", "https://github.com/aliencube/GitHub-API-Cache"}
             };
-            var content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
+            var content = new StringContent(json.ToString(), Encoding.UTF8, mediaType);
             return content;
         }
     }

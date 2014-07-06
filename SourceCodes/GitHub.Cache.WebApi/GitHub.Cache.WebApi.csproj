@@ -144,7 +144,6 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="apple-touch-icon-114x114.png" />
     <Content Include="apple-touch-icon-120x120.png" />
     <Content Include="apple-touch-icon-144x144.png" />
