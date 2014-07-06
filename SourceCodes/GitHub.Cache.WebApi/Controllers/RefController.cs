@@ -15,9 +15,10 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
         /// <summary>
         /// Initialises a new instance of the RefController class.
         /// </summary>
+        /// <param name="validationService"><c>ValidationService</c> instance.</param>
         /// <param name="webClientService"><c>WebClientService</c> instance.</param>
-        public RefController(IWebClientService webClientService)
-            : base(webClientService)
+        public RefController(IValidationService validationService, IWebClientService webClientService)
+            : base(validationService, webClientService)
         {
         }
 
@@ -30,7 +31,14 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
         /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
         public HttpResponseMessage Options(string user, string repo, string branch)
         {
-            return Get(user, repo, branch);
+            if (!this.ValidationService.ValidateAllValuesRequired(user, repo, branch))
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+
+            var url = String.Format(REF_URL, user, repo, branch);
+            var response = this.WebClientService.GetResponse(Request, url);
+            return response;
         }
 
         /// <summary>
@@ -42,15 +50,26 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
         /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
         public HttpResponseMessage Get(string user, string repo, string branch)
         {
-            if (String.IsNullOrWhiteSpace(user))
+            if (!this.ValidationService.ValidateAllValuesRequired(user, repo, branch))
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
-            if (String.IsNullOrWhiteSpace(repo))
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-            if (String.IsNullOrWhiteSpace(branch))
+
+            var url = String.Format(REF_URL, user, repo, branch);
+            var response = this.WebClientService.GetResponse(Request, url);
+            return response;
+        }
+
+        /// <summary>
+        /// Gets the <c>HttpResponseMessage</c> instance.
+        /// </summary>
+        /// <param name="user">GitHub username or organisation name.</param>
+        /// <param name="repo">GitHub repository name. (Case sensitive)</param>
+        /// <param name="branch">Branch name.</param>
+        /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
+        private HttpResponseMessage GetResponseMessage(string user, string repo, string branch)
+        {
+            if (!this.ValidationService.ValidateAllValuesRequired(user, repo, branch))
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }

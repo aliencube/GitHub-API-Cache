@@ -24,6 +24,7 @@ namespace Aliencube.GitHub.Cache.WebApi
 
         private static void RegisterServices(ContainerBuilder builder)
         {
+            builder.RegisterType<ValidationService>().As<IValidationService>().PropertiesAutowired();
             builder.RegisterType<WebClientService>().As<IWebClientService>().PropertiesAutowired();
         }
 
