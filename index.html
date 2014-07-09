@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Github-api-cache : This provides cached result populated from GitHub API requests." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Github-api-cache</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/aliencube/GitHub-API-Cache">View on GitHub</a>
+
+          <h1 id="project_title">Github-api-cache</h1>
+          <h2 id="project_tagline">This provides cached result populated from GitHub API requests.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/aliencube/GitHub-API-Cache/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/aliencube/GitHub-API-Cache/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="github-api-cache" class="anchor" href="#github-api-cache"><span class="octicon octicon-link"></span></a>GitHub API Cache</h1>
+
+<p><strong>GitHub API Cache</strong> provides cached result populated from <a href="http://github.com">GitHub</a> API requests. As a default, <a href="http://github.com">GitHub</a> only allows 60 API calls per hour for anonymous users. For authenticated users, <a href="http://github.com">GitHub</a> only allows 5000 API calls per hour. Both are not enough for certain cases. As this stores responses populated from API requests into a web server's cache memory, it minimises the number of API calls so that API limit can be avoided.</p>
+
+<h2>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<p><strong>GitHub API Cache</strong> supports three different authentication types – <code>Anonymous</code>, <code>Basic</code> and <code>AuthenticationKey</code>. Even though it supports the <code>Basic</code> authentication type, this is strongly <strong>NOT</strong> recommended to use as your <a href="http://github.com">GitHub</a> username and password is exposed on the Internet.</p>
+
+<h3>
+<a name="anonymouse-type" class="anchor" href="#anonymouse-type"><span class="octicon octicon-link"></span></a>Anonymouse Type</h3>
+
+<p>You can simply send cURL request on a command prompt like:</p>
+
+<pre lang="shell"><code>$ curl -i https://githubapicache.apphb.com/api/ref/{user}/{repo}/{branch}
+</code></pre>
+
+<p>If you are using <a href="http://jquery.com">jQuery</a>, this can be possible:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+    <span class="nx">type</span><span class="o">:</span> <span class="s2">"GET"</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s2">"https://githubapicache.apphb.com/api/ref/{user}/{repo}/{branch}"</span><span class="p">,</span>
+    <span class="nx">dataType</span><span class="o">:</span> <span class="s2">"json"</span>
+<span class="p">})</span>
+<span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// DO STUFF</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="authenticationkey-type" class="anchor" href="#authenticationkey-type"><span class="octicon octicon-link"></span></a>AuthenticationKey Type</h3>
+
+<p>You can simply send cURL request on a command prompt like:</p>
+
+<pre lang="shell"><code>$ curl -H "Authorization: token OAUTH-TOKEN" https://githubapicache.apphb.com/api/ref/{user}/{repo}/{branch}
+</code></pre>
+
+<p>If you are using <a href="http://jquery.com">jQuery</a>, this can be possible:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+    <span class="nx">type</span><span class="o">:</span> <span class="s2">"GET"</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s2">"https://githubapicache.apphb.com/api/ref/{user}/{repo}/{branch}"</span><span class="p">,</span>
+    <span class="nx">dataType</span><span class="o">:</span> <span class="s2">"json"</span><span class="p">,</span>
+    <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span> <span class="s2">"Authorization"</span><span class="o">:</span> <span class="s2">"token OAUTH-TOKEN"</span> <span class="p">}</span>
+<span class="p">})</span>
+<span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// DO STUFF</span>
+<span class="p">});</span>
+</pre></div>
+
+<h2>
+<a name="configurations" class="anchor" href="#configurations"><span class="octicon octicon-link"></span></a>Configurations</h2>
+
+<p>In order to change some configurations, <code>Web.config</code> needs to be touched.</p>
+
+<div class="highlight highlight-xml"><pre><span class="nt">&lt;applicationSettings&gt;</span>
+    <span class="nt">&lt;Aliencube.AlienCache.WebApi.Properties.Settings&gt;</span>
+        <span class="nt">&lt;setting</span> <span class="na">name=</span><span class="s">"TimeSpan"</span> <span class="na">serializeAs=</span><span class="s">"String"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;value&gt;</span>60<span class="nt">&lt;/value&gt;</span>
+        <span class="nt">&lt;/setting&gt;</span>
+        <span class="nt">&lt;setting</span> <span class="na">name=</span><span class="s">"UseAbsoluteUrl"</span> <span class="na">serializeAs=</span><span class="s">"String"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;value&gt;</span>False<span class="nt">&lt;/value&gt;</span>
+        <span class="nt">&lt;/setting&gt;</span>
+    <span class="nt">&lt;/Aliencube.AlienCache.WebApi.Properties.Settings&gt;</span>
+
+    <span class="nt">&lt;Aliencube.GitHub.Cache.Services.Properties.Settings&gt;</span>
+        <span class="nt">&lt;setting</span> <span class="na">name=</span><span class="s">"UseProxy"</span> <span class="na">serializeAs=</span><span class="s">"String"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;value&gt;</span>False<span class="nt">&lt;/value&gt;</span>
+        <span class="nt">&lt;/setting&gt;</span>
+        <span class="nt">&lt;setting</span> <span class="na">name=</span><span class="s">"ProxyUrl"</span> <span class="na">serializeAs=</span><span class="s">"String"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;value</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/setting&gt;</span>
+        <span class="nt">&lt;setting</span> <span class="na">name=</span><span class="s">"BypassOnLocal"</span> <span class="na">serializeAs=</span><span class="s">"String"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;value&gt;</span>True<span class="nt">&lt;/value&gt;</span>
+        <span class="nt">&lt;/setting&gt;</span>
+        <span class="nt">&lt;setting</span> <span class="na">name=</span><span class="s">"AuthenticationType"</span> <span class="na">serializeAs=</span><span class="s">"String"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;value&gt;</span>Anonymous<span class="nt">&lt;/value&gt;</span>
+        <span class="nt">&lt;/setting&gt;</span>
+    <span class="nt">&lt;/Aliencube.GitHub.Cache.Services.Properties.Settings&gt;</span>
+<span class="nt">&lt;/applicationSettings&gt;</span>
+</pre></div>
+
+<ul>
+<li>
+<code>TimeSpan</code>: Duration for how long the cache value is alive, in seconds. Default value is <code>60</code>.</li>
+<li>
+<code>UseAbsoluteUrl</code>: If it is set to <code>true</code>, the cache key will use the fully qualified URL to store cache value. Default value is <code>false</code>.</li>
+<li>
+<code>UseProxy</code>: If your application sits behind a firewall, this value must be set to <code>true</code>; otherwise the application will not hit <a href="http://github.com">GitHub</a> APIs. Default value is <code>false</code>.</li>
+<li>
+<code>ProxyUrl</code>: Proxy server URL. This is necessary, if <code>UseProxy</code> value is <code>true</code>. If <code>UseProxy</code> valus is <code>false</code>, this is ignored.</li>
+<li>
+<code>BypassOnLocal</code>: If it is set to <code>true</code> when <code>UseProxy</code> value is <code>true</code>, all local traffic is bypassed. If <code>UseProxy</code> value is <code>false</code>, this is ignored.</li>
+<li>
+<code>AuthenticationType</code>: This determines how <a href="http://github.com">GitHub</a> API is consumed. This value can be <code>Anonymous</code>, <code>Basic</code> and <code>AuthenticationKey</code>. Default value is <code>Anonymous</code>. </li>
+</ul><h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p><strong>GitHub API Cache</strong> is released under <a href="http://opensource.org/licenses/MIT">MIT License</a>.</p>
+
+<blockquote>
+<p>The MIT License (MIT)</p>
+
+<p>Copyright (c) 2014 <a href="http://aliencube.org">aliencube.org</a></p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+</blockquote>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Github-api-cache maintained by <a href="https://github.com/aliencube">aliencube</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
