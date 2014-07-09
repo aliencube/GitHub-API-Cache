@@ -14,5 +14,14 @@
     <Setting Name="AuthenticationType" Type="Aliencube.GitHub.Cache.Services.AuthenticationType" Scope="Application">
       <Value Profile="(Default)">Anonymous</Value>
     </Setting>
+    <Setting Name="UseErrorLogEmail" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ErrorLogEmailFrom" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ErrorLogEmailTo" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

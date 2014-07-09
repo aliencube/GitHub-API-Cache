@@ -1,4 +1,5 @@
-﻿using Aliencube.GitHub.Cache.Services.Interfaces;
+﻿using Aliencube.GitHub.Cache.Services.Exceptions;
+using Aliencube.GitHub.Cache.Services.Interfaces;
 using Aliencube.GitHub.Cache.Services.Properties;
 using Newtonsoft.Json.Linq;
 using System;
@@ -15,13 +16,15 @@ namespace Aliencube.GitHub.Cache.Services
     /// </summary>
     public class WebClientService : IWebClientService
     {
+        private readonly IEmailHelper _emailHelper;
         private readonly Settings _settings;
 
         /// <summary>
         /// Initialises a new instance of the WebClientService class.
         /// </summary>
-        public WebClientService()
+        public WebClientService(IEmailHelper emailHelper)
         {
+            this._emailHelper = emailHelper;
             this._settings = Settings.Default;
         }
 
@@ -81,7 +84,7 @@ namespace Aliencube.GitHub.Cache.Services
                     var value = client.DownloadString(uri);
                     if (String.IsNullOrWhiteSpace(value))
                     {
-                        return request.CreateResponse(HttpStatusCode.InternalServerError);
+                        throw new GitHubResponseNullException("GitHub response value is null", WebExceptionStatus.ReceiveFailure);
                     }
 
                     var mediaType = "application/json";
@@ -99,6 +102,17 @@ namespace Aliencube.GitHub.Cache.Services
             catch (Exception ex)
             {
                 response = this.GetErrorReponse(request, ex);
+
+                if (!this._settings.UseErrorLogEmail)
+                {
+                    return response;
+                }
+
+                var from = this._settings.ErrorLogEmailFrom;
+                var to = this._settings.ErrorLogEmailTo;
+                var subject = String.Format("GitHub API Cache - {0}", ex.Message);
+                var body = String.Format("{0}\n{1}", ex.Message, ex.StackTrace);
+                this._emailHelper.Send(@from, to, subject, body);
             }
             return response;
         }
@@ -261,6 +275,14 @@ namespace Aliencube.GitHub.Cache.Services
             };
             var content = new StringContent(json.ToString(), Encoding.UTF8, mediaType);
             return content;
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing,
+        /// or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
         }
     }
 }

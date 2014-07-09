@@ -7,7 +7,7 @@ namespace Aliencube.GitHub.Cache.Services.Interfaces
     /// <summary>
     /// This provides interfaces to the WebClientService class.
     /// </summary>
-    public interface IWebClientService
+    public interface IWebClientService : IDisposable
     {
         /// <summary>
         /// Gets the <c>HttpResponseMessage</c> instance.

@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace Aliencube.GitHub.Cache.Services.Interfaces
 {
     /// <summary>
     /// This provides interfaces to the ValidationService class.
     /// </summary>
-    public interface IValidationService
+    public interface IValidationService : IDisposable
     {
         /// <summary>
         /// Validates whether all values are required.

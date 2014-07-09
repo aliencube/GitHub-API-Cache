@@ -19,5 +19,13 @@ namespace Aliencube.GitHub.Cache.Services
         {
             return values.All(p => !String.IsNullOrWhiteSpace(p));
         }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing,
+        /// or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+        }
     }
 }

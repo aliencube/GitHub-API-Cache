@@ -1,4 +1,5 @@
 ﻿using Aliencube.GitHub.Cache.Services;
+using Aliencube.GitHub.Cache.Services.Helpers;
 using Aliencube.GitHub.Cache.Services.Interfaces;
 using Autofac;
 using Autofac.Integration.WebApi;
@@ -13,6 +14,7 @@ namespace Aliencube.GitHub.Cache.WebApi
         {
             var builder = new ContainerBuilder();
 
+            RegisterHelpers(builder);
             RegisterServices(builder);
             RegisterControllers(builder);
 
@@ -20,6 +22,11 @@ namespace Aliencube.GitHub.Cache.WebApi
 
             var resolver = new AutofacWebApiDependencyResolver(container);
             GlobalConfiguration.Configuration.DependencyResolver = resolver;
+        }
+
+        private static void RegisterHelpers(ContainerBuilder builder)
+        {
+            builder.RegisterType<EmailHelper>().As<IEmailHelper>().PropertiesAutowired();
         }
 
         private static void RegisterServices(ContainerBuilder builder)
