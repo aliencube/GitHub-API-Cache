@@ -19,10 +19,21 @@ $ curl -i https://githubapicache.apphb.com/api/ref/{user}/{repo}/{branch}
 If you are using [jQuery][jq], this can be possible:
 
 ```javascript
+// For CORS request
 $.ajax({
     type: "GET",
     url: "https://githubapicache.apphb.com/api/ref/{user}/{repo}/{branch}",
     dataType: "json"
+})
+.done(function(data) {
+    // DO STUFF
+});
+
+// FOR JSONP request
+$.ajax({
+    type: "GET",
+    url: "https://githubapicache.apphb.com/api/ref/{user}/{repo}/{branch}",
+    dataType: "jsonp"
 })
 .done(function(data) {
     // DO STUFF
@@ -51,6 +62,8 @@ $.ajax({
     // DO STUFF
 });
 ```
+
+**NOTE**: Using authentication key does not allow `JSONP` request.
 
 
 ## Configurations ##
@@ -81,16 +94,73 @@ In order to change some configurations, `Web.config` needs to be touched.
         <setting name="AuthenticationType" serializeAs="String">
             <value>Anonymous</value>
         </setting>
+        <setting name="UseErrorLogEmail" serializeAs="String">
+            <value>False</value>
+        </setting>
+        <setting name="ErrorLogEmailFrom" serializeAs="String">
+            <value />
+        </setting>
+        <setting name="ErrorLogEmailTo" serializeAs="String">
+            <value />
+        </setting>
     </Aliencube.GitHub.Cache.Services.Properties.Settings>
+
+    <Aliencube.GitHub.Cache.WebApi.Properties.Settings>
+        <setting name="GoogleAnalyticsCode" serializeAs="String">
+            <value>XXXXXXXX-X</value>
+        </setting>
+        <setting name="BaseUrl" serializeAs="String">
+            <value>auto</value>
+        </setting>
+    </Aliencube.GitHub.Cache.WebApi.Properties.Settings>
 </applicationSettings>
 ```
 
+### `Aliencube.AlienCache.WebApi.Properties.Settings` ###
 * `TimeSpan`: Duration for how long the cache value is alive, in seconds. Default value is `60`.
 * `UseAbsoluteUrl`: If it is set to `true`, the cache key will use the fully qualified URL to store cache value. Default value is `false`.
+
+
+### `Aliencube.GitHub.Cache.Services.Properties.Settings` ###
+
 * `UseProxy`: If your application sits behind a firewall, this value must be set to `true`; otherwise the application will not hit [GitHub][gh] APIs. Default value is `false`.
 * `ProxyUrl`: Proxy server URL. This is necessary, if `UseProxy` value is `true`. If `UseProxy` valus is `false`, this is ignored.
 * `BypassOnLocal`: If it is set to `true` when `UseProxy` value is `true`, all local traffic is bypassed. If `UseProxy` value is `false`, this is ignored.
-* `AuthenticationType`: This determines how [GitHub][gh] API is consumed. This value can be `Anonymous`, `Basic` and `AuthenticationKey`. Default value is `Anonymous`. 
+* `AuthenticationType`: This determines how [GitHub][gh] API is consumed. This value can be `Anonymous`, `Basic` and `AuthenticationKey`. Default value is `Anonymous`.
+* `UseErrorLogEmail`: If it is set to `true`, emails are sent to your designated email address on errors.
+* `ErrorLogEmailFrom`: Sender's email address.
+* `ErrorLogEmailTo`: Recipient's email address. 
+
+
+### `Aliencube.GitHub.Cache.WebApi.Properties.Settings` ###
+
+* `GoogleAnalyticsCode`: [Google Analytics][ga] tracking code.
+* `BaseUrl`: Base URL for [Google Analytics][ga]
+
+
+## SMTP ##
+
+```xml
+<system.net>
+    <mailSettings>
+        <smtp deliveryMethod="Network" deliveryFormat="International">
+            <network clientDomain="localhost" defaultCredentials="true" enableSsl="false" host="localhost" port="25" />
+        </smtp>
+    </mailSettings>
+</system.net>
+```
+
+SMTP settings above is the default. If you want to use your [Gmail](http://gmail.com) username and password, you can simply change the settings like below:
+
+```xml
+<system.net>
+    <mailSettings>
+        <smtp deliveryMethod="Network" deliveryFormat="International">
+            <network host="smtp.gmail.com" enableSsl="true" port="587" userName="[USERNAME]" password="[PASSWORD]" defaultCredentials="false" />
+        </smtp>
+    </mailSettings>
+</system.net>
+```
 
 
 ## License ##
@@ -110,3 +180,4 @@ In order to change some configurations, `Web.config` needs to be touched.
 
 [gh]: http://github.com
 [jq]: http://jquery.com
+[ga]: http://google.com/analytics
