@@ -1,4 +1,7 @@
-﻿using System.Web.Http;
+﻿using Newtonsoft.Json.Serialization;
+using System.Web.Http;
+using System.Web.Http.Cors;
+using WebApiContrib.Formatting.Jsonp;
 
 namespace Aliencube.GitHub.Cache.WebApi
 {
@@ -6,17 +9,14 @@ namespace Aliencube.GitHub.Cache.WebApi
     {
         public static void Register(HttpConfiguration config)
         {
-            config.Routes.MapHttpRoute(
-                name: "RefApi",
-                routeTemplate: "api/{controller}/{user}/{repo}/{branch}",
-                defaults: new { user = RouteParameter.Optional, repo = RouteParameter.Optional, branch = RouteParameter.Optional }
-            );
+            config.MapHttpAttributeRoutes();
 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+            var cors = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors(cors);
+
+            var jsonFormatter = config.Formatters.JsonFormatter;
+            jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            config.AddJsonpFormatter();
         }
     }
 }
