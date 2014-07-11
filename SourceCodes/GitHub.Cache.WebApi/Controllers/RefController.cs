@@ -33,14 +33,7 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
         /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
         public HttpResponseMessage Options(string user, string repo, string branch)
         {
-            if (!this.ValidationService.ValidateAllValuesRequired(user, repo, branch))
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-
-            var url = String.Format(REF_URL, user, repo, branch);
-            var response = this.WebClientService.GetResponse(Request, url);
-            return response;
+            return this.GetResponseMessage(user, repo, branch);
         }
 
         /// <summary>
@@ -52,14 +45,7 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
         /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
         public HttpResponseMessage Get(string user, string repo, string branch)
         {
-            if (!this.ValidationService.ValidateAllValuesRequired(user, repo, branch))
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-
-            var url = String.Format(REF_URL, user, repo, branch);
-            var response = this.WebClientService.GetResponse(Request, url);
-            return response;
+            return this.GetResponseMessage(user, repo, branch);
         }
 
         /// <summary>
