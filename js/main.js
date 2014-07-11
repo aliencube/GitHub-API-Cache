@@ -11,7 +11,7 @@
         $.ajax({
                 type: "GET",
                 url: url,
-                dataType: "jsonp",
+                dataType: "json",
                 headers: { "Authorization": "token 2650cba9ca98e349ee9aedec383329a39477950c" }
             })
             .done(function(data) {
