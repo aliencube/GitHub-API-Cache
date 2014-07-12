@@ -1,6 +1,5 @@
 ﻿using Aliencube.GitHub.Cache.Services.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Aliencube.GitHub.Cache.Services

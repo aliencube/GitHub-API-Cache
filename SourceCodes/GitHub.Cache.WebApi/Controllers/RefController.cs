@@ -10,6 +10,7 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
     /// This represents the controller entity for REF API.
     /// </summary>
     [Route("api/ref/{user}/{repo}/{branch}")]
+    [Obsolete("Try GitHub original API URLs instead.")]
     public class RefController : BaseApiController
     {
         private const string REF_URL = "https://api.github.com/repos/{0}/{1}/git/refs/heads/{2}";

@@ -16,6 +16,8 @@ namespace Aliencube.GitHub.Cache.Services
     /// </summary>
     public class WebClientService : IWebClientService
     {
+        private const string GITHUB_API_URL = "https://api.github.com";
+
         private readonly IEmailHelper _emailHelper;
         private readonly Settings _settings;
 
@@ -26,6 +28,29 @@ namespace Aliencube.GitHub.Cache.Services
         {
             this._emailHelper = emailHelper;
             this._settings = Settings.Default;
+        }
+
+        /// <summary>
+        /// Gets the <c>HttpResponseMessage</c> instance.
+        /// </summary>
+        /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
+        /// <param name="validationService"><c>ValidationService</c> instance.</param>
+        /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
+        public HttpResponseMessage GetResponseMessage(HttpRequestMessage request, IValidationService validationService)
+        {
+            var url = request.RequestUri.ParseQueryString().Get("url");
+            if (!validationService.ValidateAllValuesRequired(url))
+            {
+                return request.CreateResponse(HttpStatusCode.NotFound);
+            }
+
+            if (url.StartsWith("/"))
+            {
+                url = url.Substring(1);
+            }
+            url = String.Join("/", GITHUB_API_URL, url);
+            var response = this.GetResponse(request, url);
+            return response;
         }
 
         /// <summary>
