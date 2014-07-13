@@ -10,29 +10,39 @@
 
 ### Anonymouse Type ###
 
-You can simply send cURL request on a command prompt like:
+Let's say you are about to send a request to [get a reference of a branch](https://developer.github.com/v3/git/refs/#get-a-reference). If you use [GitHub][gh] API, this is achieved by sending a request like:
 
 ```shell
-$ curl -i https://githubapicache.apphb.com/api/ref/{user}/{repo}/{branch}
+$ curl -i https://api.github.com/repos/{owner}/{repo}/git/refs/{ref}
 ```
+
+With **GitHub API Cache**, you can send the same request like:
+
+```shell
+$ curl -i https://githubapicache.apphb.com/repos/{owner}/{repo}/git/refs/{ref}
+```
+
+> **Note**: The only difference from the original [GitHub][gh] API is just URL &ndash; **githubapicache.apphb.com**.
 
 If you are using [jQuery][jq], this can be possible:
 
 ```javascript
-// For CORS request
 $.ajax({
     type: "GET",
-    url: "https://githubapicache.apphb.com/api/ref/{user}/{repo}/{branch}",
+    url: "https://githubapicache.apphb.com/repos/{owner}/{repo}/git/refs/{ref}",
     dataType: "json"
 })
 .done(function(data) {
     // DO STUFF
 });
+```
 
-// FOR JSONP request
+If you are interested in [`JSONP`](http://en.wikipedia.org/wiki/JSONP) request with [jQuery][jq], this can be possible:
+
+```javascript
 $.ajax({
     type: "GET",
-    url: "https://githubapicache.apphb.com/api/ref/{user}/{repo}/{branch}",
+    url: "https://githubapicache.apphb.com/repos/{owner}/{repo}/git/refs/{ref}",
     dataType: "jsonp"
 })
 .done(function(data) {
@@ -43,18 +53,26 @@ $.ajax({
 
 ### AuthenticationKey Type ###
 
-You can simply send cURL request on a command prompt like:
+Let's say you are about to send a request to [get a reference of a branch](https://developer.github.com/v3/git/refs/#get-a-reference). If you use [GitHub][gh] API, this is achieved by sending a request like:
 
 ```shell
-$ curl -H "Authorization: token OAUTH-TOKEN" https://githubapicache.apphb.com/api/ref/{user}/{repo}/{branch}
+$ curl -i https://api.github.com/repos/{owner}/{repo}/git/refs/{ref}
 ```
+
+With **GitHub API Cache**, you can send the same request like:
+
+```shell
+$ curl -H "Authorization: token OAUTH-TOKEN" https://githubapicache.apphb.com/repos/{owner}/{repo}/git/refs/{ref}
+```
+
+> **Note**: The only difference from the original [GitHub][gh] API is just URL &ndash; **githubapicache.apphb.com**.
 
 If you are using [jQuery][jq], this can be possible:
 
 ```javascript
 $.ajax({
     type: "GET",
-    url: "https://githubapicache.apphb.com/api/ref/{user}/{repo}/{branch}",
+    url: "https://githubapicache.apphb.com/repos/{owner}/{repo}/git/refs/{ref}",
     dataType: "json",
     headers: { "Authorization": "token OAUTH-TOKEN" }
 })
@@ -63,7 +81,7 @@ $.ajax({
 });
 ```
 
-**NOTE**: Using authentication key does not allow `JSONP` request.
+> **NOTE**: Using authentication key does not allow `JSONP` request.
 
 
 ## Configurations ##
