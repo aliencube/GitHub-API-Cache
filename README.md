@@ -86,60 +86,53 @@ $.ajax({
 
 ## Configurations ##
 
-In order to change some configurations, `Web.config` needs to be touched.
+In order to change some configurations, `Web.config` needs to be touched, especially the `<applicationSettings>` section.
 
-```xml
-<applicationSettings>
-    <Aliencube.AlienCache.WebApi.Properties.Settings>
-        <setting name="TimeSpan" serializeAs="String">
-            <value>60</value>
-        </setting>
-        <setting name="UseAbsoluteUrl" serializeAs="String">
-            <value>False</value>
-        </setting>
-    </Aliencube.AlienCache.WebApi.Properties.Settings>
-
-    <Aliencube.GitHub.Cache.Services.Properties.Settings>
-        <setting name="UseProxy" serializeAs="String">
-            <value>False</value>
-        </setting>
-        <setting name="ProxyUrl" serializeAs="String">
-            <value />
-        </setting>
-        <setting name="BypassOnLocal" serializeAs="String">
-            <value>True</value>
-        </setting>
-        <setting name="AuthenticationType" serializeAs="String">
-            <value>Anonymous</value>
-        </setting>
-        <setting name="UseErrorLogEmail" serializeAs="String">
-            <value>False</value>
-        </setting>
-        <setting name="ErrorLogEmailFrom" serializeAs="String">
-            <value />
-        </setting>
-        <setting name="ErrorLogEmailTo" serializeAs="String">
-            <value />
-        </setting>
-    </Aliencube.GitHub.Cache.Services.Properties.Settings>
-
-    <Aliencube.GitHub.Cache.WebApi.Properties.Settings>
-        <setting name="GoogleAnalyticsCode" serializeAs="String">
-            <value>XXXXXXXX-X</value>
-        </setting>
-        <setting name="BaseUrl" serializeAs="String">
-            <value>auto</value>
-        </setting>
-    </Aliencube.GitHub.Cache.WebApi.Properties.Settings>
-</applicationSettings>
-```
 
 ### `Aliencube.AlienCache.WebApi.Properties.Settings` ###
+
+```xml
+<Aliencube.AlienCache.WebApi.Properties.Settings>
+    <setting name="TimeSpan" serializeAs="String">
+        <value>60</value>
+    </setting>
+    <setting name="UseAbsoluteUrl" serializeAs="String">
+        <value>False</value>
+    </setting>
+</Aliencube.AlienCache.WebApi.Properties.Settings>
+```
+
 * `TimeSpan`: Duration for how long the cache value is alive, in seconds. Default value is `60`.
 * `UseAbsoluteUrl`: If it is set to `true`, the cache key will use the fully qualified URL to store cache value. Default value is `false`.
 
 
 ### `Aliencube.GitHub.Cache.Services.Properties.Settings` ###
+
+```xml
+<Aliencube.GitHub.Cache.Services.Properties.Settings>
+    <setting name="UseProxy" serializeAs="String">
+        <value>False</value>
+    </setting>
+    <setting name="ProxyUrl" serializeAs="String">
+        <value />
+    </setting>
+    <setting name="BypassOnLocal" serializeAs="String">
+        <value>True</value>
+    </setting>
+    <setting name="AuthenticationType" serializeAs="String">
+        <value>Anonymous</value>
+    </setting>
+    <setting name="UseErrorLogEmail" serializeAs="String">
+        <value>False</value>
+    </setting>
+    <setting name="ErrorLogEmailFrom" serializeAs="String">
+        <value />
+    </setting>
+    <setting name="ErrorLogEmailTo" serializeAs="String">
+        <value />
+    </setting>
+</Aliencube.GitHub.Cache.Services.Properties.Settings>
+```
 
 * `UseProxy`: If your application sits behind a firewall, this value must be set to `true`; otherwise the application will not hit [GitHub][gh] APIs. Default value is `false`.
 * `ProxyUrl`: Proxy server URL. This is necessary, if `UseProxy` value is `true`. If `UseProxy` valus is `false`, this is ignored.
@@ -152,8 +145,32 @@ In order to change some configurations, `Web.config` needs to be touched.
 
 ### `Aliencube.GitHub.Cache.WebApi.Properties.Settings` ###
 
+```xml
+<Aliencube.GitHub.Cache.WebApi.Properties.Settings>
+    <setting name="GoogleAnalyticsCode" serializeAs="String">
+        <value>XXXXXXXX-X</value>
+    </setting>
+    <setting name="BaseUrl" serializeAs="String">
+        <value>auto</value>
+    </setting>
+</Aliencube.GitHub.Cache.WebApi.Properties.Settings>
+```
+
 * `GoogleAnalyticsCode`: [Google Analytics][ga] tracking code.
 * `BaseUrl`: Base URL for [Google Analytics][ga]
+
+
+### `Aliencube.WebApi.RequireHttps.Properties.Settings` ###
+
+```xml
+<Aliencube.WebApi.RequireHttps.Properties.Settings>
+    <setting name="UseHttps" serializeAs="String">
+        <value>False</value>
+    </setting>
+</Aliencube.WebApi.RequireHttps.Properties.Settings>
+```
+
+* `UseHttps`: If this is set to `true`, only HTTPS connection can send requests.
 
 
 ## SMTP ##
@@ -168,7 +185,7 @@ In order to change some configurations, `Web.config` needs to be touched.
 </system.net>
 ```
 
-SMTP settings above is the default. If you want to use your [Gmail](http://gmail.com) username and password, you can simply change the settings like below:
+SMTP settings above is the default. If you want to use your [Gmail][gm] username and password, or similar web mail service to [Gmail][gm], you can simply change the settings like below:
 
 ```xml
 <system.net>
@@ -199,3 +216,4 @@ SMTP settings above is the default. If you want to use your [Gmail](http://gmail
 [gh]: http://github.com
 [jq]: http://jquery.com
 [ga]: http://google.com/analytics
+[gm]: http://gmail.com
