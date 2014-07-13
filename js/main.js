@@ -7,12 +7,12 @@
 
     //  Gets the latest commit key.
     var getSha = function () {
-        var url = "https://githubapicache.apphb.com/api/ref/aliencube/GitHub-API-Cache/master";
+        var url = gitHubApiCacheUrl + "/repos/aliencube/GitHub-API-Cache/git/refs/heads/master";
         $.ajax({
                 type: "GET",
                 url: url,
                 dataType: "json",
-                headers: { "Authorization": "token 2650cba9ca98e349ee9aedec383329a39477950c" }
+                headers: { "Authorization": "token " + authKey }
             })
             .done(function(data) {
                 var sha = data.object.sha;
