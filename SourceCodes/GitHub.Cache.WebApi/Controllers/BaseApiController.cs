@@ -8,8 +8,8 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
     /// <summary>
     /// This represents the base controller entity. This must be inherited.
     /// </summary>
-    [WebApiCache(CachConfigurationSettingsProviderType = typeof(CacheConfigurationSettingsProvider))]
-    [RequreHttps(RequireHttpsConfigurationSettingsProviderType = typeof(RequireHttpsConfigurationSettingsProvider))]
+    [WebApiCache(WebApiCacheConfigurationSettingsProviderType = typeof(WebApiCacheConfigurationSettingsProvider))]
+    [RequireHttps(RequireHttpsConfigurationSettingsProviderType = typeof(RequireHttpsConfigurationSettingsProvider))]
     public abstract class BaseApiController : ApiController
     {
         /// <summary>

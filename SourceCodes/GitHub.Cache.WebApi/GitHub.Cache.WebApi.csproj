@@ -39,10 +39,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aliencube.AlienCache.WebApi">
+    <Reference Include="Aliencube.AlienCache.WebApi, Version=1.5.0.15547, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\Aliencube.AlienCache.WebApi\Aliencube.AlienCache.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="Aliencube.WebApi.RequireHttps">
+    <Reference Include="Aliencube.WebApi.RequireHttps, Version=1.0.1.38349, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\Aliencube.WebApi.RequireHttps\Aliencube.WebApi.RequireHttps.dll</HintPath>
     </Reference>
     <Reference Include="Autofac">
