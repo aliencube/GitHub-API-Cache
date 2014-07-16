@@ -1,11 +1,10 @@
-using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using Aliencube.GitHub.Cache.Services;
 using Aliencube.GitHub.Cache.Services.Interfaces;
 using Aliencube.GitHub.Cache.Services.Validators;
 using FluentAssertions;
 using NUnit.Framework;
+using System;
+using System.Net.Http;
 
 namespace Aliencube.GitHub.Cache.WebApi.Tests
 {
@@ -68,7 +67,7 @@ namespace Aliencube.GitHub.Cache.WebApi.Tests
                     this._request.Headers.Add("Authorization", authKey);
             }
 
-            this._validator = BaseAuthValidator.CreateInstance(authType);
+            this._validator = BaseAuthenticationValidator.CreateInstance(authType);
             this._validator.ValidateAuthentication(this._request).Should().Be(expected);
         }
 

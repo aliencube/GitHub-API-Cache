@@ -7,7 +7,7 @@ namespace Aliencube.GitHub.Cache.Services.Validators
     /// <summary>
     /// This represents the validator entity for authentication. This must be inherited.
     /// </summary>
-    public abstract class BaseAuthValidator : IServiceValidator
+    public abstract class BaseAuthenticationValidator : IServiceValidator
     {
         /// <summary>
         /// Validates the authentication request.
@@ -34,7 +34,7 @@ namespace Aliencube.GitHub.Cache.Services.Validators
         /// </summary>
         /// <param name="authType"><c>AuthenticationType</c> value.</param>
         /// <returns>Returns the BaseAuthValidator instance.</returns>
-        public static BaseAuthValidator CreateInstance(AuthenticationType authType)
+        public static BaseAuthenticationValidator CreateInstance(AuthenticationType authType)
         {
             switch (authType)
             {

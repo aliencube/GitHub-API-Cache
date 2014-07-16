@@ -6,7 +6,7 @@ namespace Aliencube.GitHub.Cache.Services.Validators
     /// <summary>
     /// This represents the basic authentication validator entity.
     /// </summary>
-    public class AuthKeyValidator : BaseAuthValidator
+    public class AuthKeyValidator : BaseAuthenticationValidator
     {
         /// <summary>
         /// Validates the authentication request.

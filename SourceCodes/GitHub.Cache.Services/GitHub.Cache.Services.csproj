@@ -81,7 +81,7 @@
     <Compile Include="Validators\ParameterValidator.cs" />
     <Compile Include="Validators\AnonymousValidator.cs" />
     <Compile Include="Validators\AuthKeyValidator.cs" />
-    <Compile Include="Validators\BaseAuthValidator.cs" />
+    <Compile Include="Validators\BaseAuthenticationValidator.cs" />
     <Compile Include="Interfaces\IServiceValidator.cs" />
     <Compile Include="Validators\BasicAuthValidator.cs" />
     <Compile Include="WebClientService.cs" />

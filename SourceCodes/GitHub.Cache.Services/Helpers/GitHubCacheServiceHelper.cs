@@ -33,7 +33,7 @@ namespace Aliencube.GitHub.Cache.Services.Helpers
         /// <returns>Returns <c>True</c>, if the request is valid; otherwise returns <c>False</c>.</returns>
         public bool ValidateRequest(HttpRequestMessage request)
         {
-            var validator = BaseAuthValidator.CreateInstance(this._settings.AuthenticationType);
+            var validator = BaseAuthenticationValidator.CreateInstance(this._settings.AuthenticationType);
             var validated = validator.ValidateAuthentication(request);
             return validated;
         }
