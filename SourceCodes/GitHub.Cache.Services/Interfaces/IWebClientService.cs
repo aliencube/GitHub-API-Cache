@@ -12,9 +12,8 @@ namespace Aliencube.GitHub.Cache.Services.Interfaces
         /// Gets the <c>HttpResponseMessage</c> instance.
         /// </summary>
         /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
-        /// <param name="validationService"><c>ValidationService</c> instance.</param>
         /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
-        HttpResponseMessage GetResponseMessage(HttpRequestMessage request, IServiceValidator validationService);
+        HttpResponseMessage GetResponseMessage(HttpRequestMessage request);
 
         /// <summary>
         /// Gets the <c>HttpResponseMessage</c> instance.

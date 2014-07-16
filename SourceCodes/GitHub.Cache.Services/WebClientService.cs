@@ -18,6 +18,7 @@ namespace Aliencube.GitHub.Cache.Services
         private const string GITHUB_API_URL = "https://api.github.com";
 
         private readonly IGitHubCacheServiceSettingsProvider _settings;
+        private readonly IServiceValidator _parameterValidator;
         private readonly IGitHubCacheServiceHelper _gitHubCacheServiceHelper;
         private readonly IEmailHelper _emailHelper;
 
@@ -25,15 +26,25 @@ namespace Aliencube.GitHub.Cache.Services
         /// Initialises a new instance of the WebClientService class.
         /// </summary>
         /// <param name="settings"><c>GitHubCacheServiceSettingsProvider</c> instance.</param>
+        /// <param name="parameterValidator"><c>ServiceValidator</c> instance.</param>
         /// <param name="gitHubCacheServiceHelper"><c>GitHubCacheServiceHelper</c> instance.</param>
         /// <param name="emailHelper"><c>EmailHelper</c> instance.</param>
-        public WebClientService(IGitHubCacheServiceSettingsProvider settings, IGitHubCacheServiceHelper gitHubCacheServiceHelper, IEmailHelper emailHelper)
+        public WebClientService(IGitHubCacheServiceSettingsProvider settings,
+                                IServiceValidator parameterValidator,
+                                IGitHubCacheServiceHelper gitHubCacheServiceHelper,
+                                IEmailHelper emailHelper)
         {
             if (settings == null)
             {
                 throw new ArgumentNullException("settings");
             }
             this._settings = settings;
+
+            if (parameterValidator == null)
+            {
+                throw new ArgumentNullException("parameterValidator");
+            }
+            this._parameterValidator = parameterValidator;
 
             if (gitHubCacheServiceHelper == null)
             {
@@ -52,12 +63,11 @@ namespace Aliencube.GitHub.Cache.Services
         /// Gets the <c>HttpResponseMessage</c> instance.
         /// </summary>
         /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
-        /// <param name="validationService"><c>ValidationService</c> instance.</param>
         /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
-        public HttpResponseMessage GetResponseMessage(HttpRequestMessage request, IServiceValidator validationService)
+        public HttpResponseMessage GetResponseMessage(HttpRequestMessage request)
         {
             var url = request.RequestUri.ParseQueryString().Get("url");
-            if (!validationService.ValidateAllValuesRequired(url))
+            if (!this._parameterValidator.ValidateAllValuesRequired(url))
             {
                 return request.CreateResponse(HttpStatusCode.NotFound);
             }

@@ -1,8 +1,7 @@
 ﻿using Aliencube.GitHub.Cache.Services.Interfaces;
+using Aliencube.GitHub.Cache.Services.Validators;
 using System;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using Aliencube.GitHub.Cache.Services.Validators;
 
 namespace Aliencube.GitHub.Cache.Services.Helpers
 {

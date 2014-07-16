@@ -1,6 +1,8 @@
+using System;
+
 namespace Aliencube.GitHub.Cache.Services.Interfaces
 {
-    public interface IGitHubCacheServiceSettingsProvider
+    public interface IGitHubCacheServiceSettingsProvider : IDisposable
     {
         /// <summary>
         /// Gets the value that specifies whether to use proxy server or not.

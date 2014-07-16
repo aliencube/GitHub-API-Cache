@@ -26,7 +26,7 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
         /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
         public HttpResponseMessage Options()
         {
-            return this.WebClientService.GetResponseMessage(Request, this.ParameterValidator);
+            return this.WebClientService.GetResponseMessage(Request);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
         /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
         public HttpResponseMessage Get()
         {
-            return this.WebClientService.GetResponseMessage(Request, this.ParameterValidator);
+            return this.WebClientService.GetResponseMessage(Request);
         }
     }
 }
