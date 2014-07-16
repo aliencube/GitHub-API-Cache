@@ -29,11 +29,12 @@ namespace Aliencube.GitHub.Cache.Services.Helpers
         /// Validates whether the request comes with proper values or not.
         /// </summary>
         /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
+        /// <param name="uri"><c>Uri</c> to send the request.</param>
         /// <returns>Returns <c>True</c>, if the request is valid; otherwise returns <c>False</c>.</returns>
-        public bool ValidateRequest(HttpRequestMessage request)
+        public bool ValidateRequest(HttpRequestMessage request, Uri uri)
         {
             var validator = BaseAuthenticationValidator.CreateInstance(this._settings.AuthenticationType);
-            var validated = validator.ValidateAuthentication(request);
+            var validated = validator.ValidateAuthentication(request, uri);
             return validated;
         }
 

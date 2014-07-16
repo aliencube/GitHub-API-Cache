@@ -1,6 +1,5 @@
 using Aliencube.GitHub.Cache.Services;
 using Aliencube.GitHub.Cache.Services.Interfaces;
-using Aliencube.GitHub.Cache.Services.Validators;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -29,7 +28,7 @@ namespace Aliencube.GitHub.Cache.WebApi.Tests
         {
             if (this._service != null)
                 this._service.Dispose();
-				
+
             if (this._parameterValidator != null)
                 this._parameterValidator.Dispose();
 

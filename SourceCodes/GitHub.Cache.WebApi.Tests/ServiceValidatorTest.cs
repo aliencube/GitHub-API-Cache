@@ -68,7 +68,7 @@ namespace Aliencube.GitHub.Cache.WebApi.Tests
             }
 
             this._validator = BaseAuthenticationValidator.CreateInstance(authType);
-            this._validator.ValidateAuthentication(this._request).Should().Be(expected);
+            this._validator.ValidateAuthentication(this._request, uri).Should().Be(expected);
         }
 
         #endregion Tests

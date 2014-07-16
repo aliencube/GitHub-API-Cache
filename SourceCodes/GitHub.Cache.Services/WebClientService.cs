@@ -104,7 +104,7 @@ namespace Aliencube.GitHub.Cache.Services
             HttpResponseMessage response;
             try
             {
-                var validated = this._gitHubCacheServiceHelper.ValidateRequest(request);
+                var validated = this._gitHubCacheServiceHelper.ValidateRequest(request, uri);
                 if (!validated)
                 {
                     throw new InvalidOperationException("Unauthorised");

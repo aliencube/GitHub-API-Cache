@@ -12,7 +12,8 @@ namespace Aliencube.GitHub.Cache.Services.Interfaces
         /// Validates whether the request comes with proper values or not.
         /// </summary>
         /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
+        /// <param name="uri"><c>Uri</c> to send the request.</param>
         /// <returns>Returns <c>True</c>, if the request is valid; otherwise returns <c>False</c>.</returns>
-        bool ValidateRequest(HttpRequestMessage request);
+        bool ValidateRequest(HttpRequestMessage request, Uri uri);
     }
 }

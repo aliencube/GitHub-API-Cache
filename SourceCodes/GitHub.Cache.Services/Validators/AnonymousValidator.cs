@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 
 namespace Aliencube.GitHub.Cache.Services.Validators
 {
@@ -11,8 +12,9 @@ namespace Aliencube.GitHub.Cache.Services.Validators
         /// Validates the authentication request.
         /// </summary>
         /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
+        /// <param name="uri"><c>Uri</c> to send the request.</param>
         /// <returns>Returns <c>True</c>, if validated; otherwise returns <c>False</c>.</returns>
-        public override bool ValidateAuthentication(HttpRequestMessage request)
+        public override bool ValidateAuthentication(HttpRequestMessage request, Uri uri)
         {
             return true;
         }

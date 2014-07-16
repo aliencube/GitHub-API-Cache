@@ -65,7 +65,7 @@ namespace Aliencube.GitHub.Cache.WebApi.Tests
             this._settings.AuthenticationType.Returns(authType);
 
             this._helper = new GitHubCacheServiceHelper(this._settings);
-            this._helper.ValidateRequest(this._request).Should().Be(expected);
+            this._helper.ValidateRequest(this._request, uri).Should().Be(expected);
         }
 
         #endregion Tests

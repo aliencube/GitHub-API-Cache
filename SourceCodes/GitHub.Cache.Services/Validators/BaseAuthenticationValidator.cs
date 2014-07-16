@@ -13,8 +13,9 @@ namespace Aliencube.GitHub.Cache.Services.Validators
         /// Validates the authentication request.
         /// </summary>
         /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
+        /// <param name="uri"><c>Uri</c> to send the request.</param>
         /// <returns>Returns <c>True</c>, if validated; otherwise returns <c>False</c>.</returns>
-        public virtual bool ValidateAuthentication(HttpRequestMessage request)
+        public virtual bool ValidateAuthentication(HttpRequestMessage request, Uri uri)
         {
             return true;
         }
