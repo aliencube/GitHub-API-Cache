@@ -19,7 +19,6 @@ namespace Aliencube.GitHub.Cache.Services
         private const string GITHUB_API_URL = "https://api.github.com";
 
         private readonly IEmailHelper _emailHelper;
-        private readonly Settings _settings;
 
         /// <summary>
         /// Initialises a new instance of the WebClientService class.
@@ -27,8 +26,13 @@ namespace Aliencube.GitHub.Cache.Services
         public WebClientService(IEmailHelper emailHelper)
         {
             this._emailHelper = emailHelper;
-            this._settings = Settings.Default;
+            this.Settings = Settings.Default;
         }
+
+        /// <summary>
+        /// Gets the configuration settings.
+        /// </summary>
+        public Settings Settings { get; private set; }
 
         /// <summary>
         /// Gets the <c>HttpResponseMessage</c> instance.
@@ -84,9 +88,9 @@ namespace Aliencube.GitHub.Cache.Services
 
                 using (var client = new WebClient())
                 {
-                    if (this._settings.UseProxy)
+                    if (this.Settings.UseProxy)
                     {
-                        var proxy = new WebProxy(this._settings.ProxyUrl, this._settings.BypassOnLocal);
+                        var proxy = new WebProxy(this.Settings.ProxyUrl, this.Settings.BypassOnLocal);
                         client.Proxy = proxy;
                     }
 
@@ -101,7 +105,7 @@ namespace Aliencube.GitHub.Cache.Services
                     }
                     client.Headers.Add(HttpRequestHeader.Accept, String.Join(",", accepts));
 
-                    if (this._settings.AuthenticationType == AuthenticationType.AuthenticationKey)
+                    if (this.Settings.AuthenticationType == AuthenticationType.AuthenticationKey)
                     {
                         client.Headers.Add(HttpRequestHeader.Authorization, request.Headers.Authorization.ToString());
                     }
@@ -128,13 +132,13 @@ namespace Aliencube.GitHub.Cache.Services
             {
                 response = this.GetErrorReponse(request, ex);
 
-                if (!this._settings.UseErrorLogEmail)
+                if (!this.Settings.UseErrorLogEmail)
                 {
                     return response;
                 }
 
-                var from = this._settings.ErrorLogEmailFrom;
-                var to = this._settings.ErrorLogEmailTo;
+                var from = this.Settings.ErrorLogEmailFrom;
+                var to = this.Settings.ErrorLogEmailTo;
                 var subject = String.Format("GitHub API Cache - {0}", ex.Message);
                 var body = String.Format("{0}\n{1}", ex.Message, ex.StackTrace);
                 this._emailHelper.Send(@from, to, subject, body);
@@ -151,7 +155,7 @@ namespace Aliencube.GitHub.Cache.Services
         public bool ValidateRequest(HttpRequestMessage request, Uri uri)
         {
             var validated = true;
-            switch (this._settings.AuthenticationType)
+            switch (this.Settings.AuthenticationType)
             {
                 case AuthenticationType.Basic:
                     validated = this.ValidateBasicAuthentication(uri.OriginalString);

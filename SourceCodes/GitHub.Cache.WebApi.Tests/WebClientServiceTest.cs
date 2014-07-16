@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Aliencube.GitHub.Cache.Services;
+using Aliencube.GitHub.Cache.Services.Interfaces;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Aliencube.GitHub.Cache.WebApi.Tests
@@ -11,15 +10,27 @@ namespace Aliencube.GitHub.Cache.WebApi.Tests
     {
         #region SetUp / TearDown
 
+        private IEmailHelper _helper;
+        private IWebClientService _service;
+
         [SetUp]
         public void Init()
-        { }
+        {
+            this._helper = Substitute.For<IEmailHelper>();
+            this._service = new WebClientService(this._helper);
+        }
 
         [TearDown]
         public void Dispose()
-        { }
+        {
+            if (this._service != null)
+                this._service.Dispose();
 
-        #endregion
+            if (this._helper != null)
+                this._helper.Dispose();
+        }
+
+        #endregion SetUp / TearDown
 
         #region Tests
 
@@ -28,6 +39,6 @@ namespace Aliencube.GitHub.Cache.WebApi.Tests
         {
         }
 
-        #endregion
+        #endregion Tests
     }
 }

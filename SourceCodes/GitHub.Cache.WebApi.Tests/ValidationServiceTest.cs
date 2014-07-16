@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Aliencube.GitHub.Cache.Services;
 using Aliencube.GitHub.Cache.Services.Interfaces;
 using FluentAssertions;
@@ -29,7 +25,7 @@ namespace Aliencube.GitHub.Cache.WebApi.Tests
                 this._service.Dispose();
         }
 
-        #endregion
+        #endregion SetUp / TearDown
 
         #region Tests
 
@@ -42,6 +38,6 @@ namespace Aliencube.GitHub.Cache.WebApi.Tests
             this._service.ValidateAllValuesRequired(values).Should().Be(expected);
         }
 
-        #endregion
+        #endregion Tests
     }
 }
