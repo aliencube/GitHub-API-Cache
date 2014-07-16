@@ -65,7 +65,9 @@
     </Compile>
     <Compile Include="AuthenticationType.cs" />
     <Compile Include="Exceptions\GitHubResponseNullException.cs" />
+    <Compile Include="GitHubCacheServiceSettingsProvider.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
+    <Compile Include="Interfaces\IGitHubCacheServiceSettingsProvider.cs" />
     <Compile Include="Interfaces\IEmailHelper.cs" />
     <Compile Include="Interfaces\IWebClientService.cs" />
     <Compile Include="Interfaces\IValidationService.cs" />

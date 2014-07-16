@@ -14,6 +14,7 @@ namespace Aliencube.GitHub.Cache.WebApi
         {
             var builder = new ContainerBuilder();
 
+            RegisterSettings(builder);
             RegisterHelpers(builder);
             RegisterServices(builder);
             RegisterControllers(builder);
@@ -22,6 +23,11 @@ namespace Aliencube.GitHub.Cache.WebApi
 
             var resolver = new AutofacWebApiDependencyResolver(container);
             GlobalConfiguration.Configuration.DependencyResolver = resolver;
+        }
+
+        private static void RegisterSettings(ContainerBuilder builder)
+        {
+            builder.RegisterType<GitHubCacheServiceSettingsProvider>().As<IGitHubCacheServiceSettingsProvider>().PropertiesAutowired();
         }
 
         private static void RegisterHelpers(ContainerBuilder builder)

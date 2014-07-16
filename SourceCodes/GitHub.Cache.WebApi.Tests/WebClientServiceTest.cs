@@ -10,6 +10,7 @@ namespace Aliencube.GitHub.Cache.WebApi.Tests
     {
         #region SetUp / TearDown
 
+        private IGitHubCacheServiceSettingsProvider _settings;
         private IEmailHelper _helper;
         private IWebClientService _service;
 
@@ -17,7 +18,6 @@ namespace Aliencube.GitHub.Cache.WebApi.Tests
         public void Init()
         {
             this._helper = Substitute.For<IEmailHelper>();
-            this._service = new WebClientService(this._helper);
         }
 
         [TearDown]
@@ -37,6 +37,8 @@ namespace Aliencube.GitHub.Cache.WebApi.Tests
         [Test]
         public void Test()
         {
+            this._settings = Substitute.For<IGitHubCacheServiceSettingsProvider>();
+            this._service = new WebClientService(this._settings, this._helper);
         }
 
         #endregion Tests

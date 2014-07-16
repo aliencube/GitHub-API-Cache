@@ -1,4 +1,3 @@
-using Aliencube.GitHub.Cache.Services.Properties;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -10,11 +9,6 @@ namespace Aliencube.GitHub.Cache.Services.Interfaces
     /// </summary>
     public interface IWebClientService : IDisposable
     {
-        /// <summary>
-        /// Gets the configuration settings.
-        /// </summary>
-        Settings Settings { get; }
-
         /// <summary>
         /// Gets the <c>HttpResponseMessage</c> instance.
         /// </summary>
