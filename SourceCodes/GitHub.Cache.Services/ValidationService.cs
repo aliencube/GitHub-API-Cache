@@ -16,7 +16,7 @@ namespace Aliencube.GitHub.Cache.Services
         /// <returns>Returns <c>True</c>, if all values are required; otherwise returns <c>False</c>.</returns>
         public bool ValidateAllValuesRequired(params string[] values)
         {
-            return values.All(p => !String.IsNullOrWhiteSpace(p));
+            return values.All(value => !String.IsNullOrWhiteSpace(value));
         }
 
         /// <summary>
