@@ -13,10 +13,10 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
         /// <summary>
         /// Initialises a new instance of the RefController class.
         /// </summary>
-        /// <param name="validationService"><c>ValidationService</c> instance.</param>
+        /// <param name="parameterValidator"><c>ServiceValidator</c> instance.</param>
         /// <param name="webClientService"><c>WebClientService</c> instance.</param>
-        public V3Controller(IValidationService validationService, IWebClientService webClientService)
-            : base(validationService, webClientService)
+        public V3Controller(IServiceValidator parameterValidator, IWebClientService webClientService)
+            : base(parameterValidator, webClientService)
         {
         }
 
@@ -26,7 +26,7 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
         /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
         public HttpResponseMessage Options()
         {
-            return this.WebClientService.GetResponseMessage(Request, this.ValidationService);
+            return this.WebClientService.GetResponseMessage(Request, this.ParameterValidator);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
         /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
         public HttpResponseMessage Get()
         {
-            return this.WebClientService.GetResponseMessage(Request, this.ValidationService);
+            return this.WebClientService.GetResponseMessage(Request, this.ParameterValidator);
         }
     }
 }

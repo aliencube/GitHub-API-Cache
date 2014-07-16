@@ -67,17 +67,23 @@
     <Compile Include="Exceptions\GitHubResponseNullException.cs" />
     <Compile Include="GitHubCacheServiceSettingsProvider.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
+    <Compile Include="Helpers\GitHubCacheServiceHelper.cs" />
+    <Compile Include="Interfaces\IGitHubCacheServiceHelper.cs" />
     <Compile Include="Interfaces\IGitHubCacheServiceSettingsProvider.cs" />
     <Compile Include="Interfaces\IEmailHelper.cs" />
     <Compile Include="Interfaces\IWebClientService.cs" />
-    <Compile Include="Interfaces\IValidationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="ValidationService.cs" />
+    <Compile Include="Validators\ParameterValidator.cs" />
+    <Compile Include="Validators\AnonymousValidator.cs" />
+    <Compile Include="Validators\AuthKeyValidator.cs" />
+    <Compile Include="Validators\BaseAuthValidator.cs" />
+    <Compile Include="Interfaces\IServiceValidator.cs" />
+    <Compile Include="Validators\BasicAuthValidator.cs" />
     <Compile Include="WebClientService.cs" />
   </ItemGroup>
   <ItemGroup>

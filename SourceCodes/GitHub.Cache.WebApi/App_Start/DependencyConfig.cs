@@ -1,6 +1,7 @@
 ﻿using Aliencube.GitHub.Cache.Services;
 using Aliencube.GitHub.Cache.Services.Helpers;
 using Aliencube.GitHub.Cache.Services.Interfaces;
+using Aliencube.GitHub.Cache.Services.Validators;
 using Autofac;
 using Autofac.Integration.WebApi;
 using System.Reflection;
@@ -37,7 +38,7 @@ namespace Aliencube.GitHub.Cache.WebApi
 
         private static void RegisterServices(ContainerBuilder builder)
         {
-            builder.RegisterType<ValidationService>().As<IValidationService>().PropertiesAutowired();
+            builder.RegisterType<ParameterValidator>().As<IServiceValidator>().PropertiesAutowired();
             builder.RegisterType<WebClientService>().As<IWebClientService>().PropertiesAutowired();
         }
 

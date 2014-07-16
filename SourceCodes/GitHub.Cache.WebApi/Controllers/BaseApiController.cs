@@ -15,18 +15,18 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
         /// <summary>
         /// Initialises a new instance of the BaseApiController class.
         /// </summary>
-        /// <param name="validationService"><c>ValidationService</c> instance.</param>
+        /// <param name="parameterValidator"><c>ServiceValidator</c> instance.</param>
         /// <param name="webClientService"><c>WebClientService</c> instance.</param>
-        protected BaseApiController(IValidationService validationService, IWebClientService webClientService)
+        protected BaseApiController(IServiceValidator parameterValidator, IWebClientService webClientService)
         {
-            this.ValidationService = validationService;
+            this.ParameterValidator = parameterValidator;
             this.WebClientService = webClientService;
         }
 
         /// <summary>
-        /// Gets the <c>ValidationService</c> instance.
+        /// Gets the <c>ServiceValidator</c> instance.
         /// </summary>
-        protected IValidationService ValidationService { get; private set; }
+        protected IServiceValidator ParameterValidator { get; private set; }
 
         /// <summary>
         /// Gets the <c>WebClientService</c> instance.

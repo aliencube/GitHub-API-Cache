@@ -18,18 +18,28 @@ namespace Aliencube.GitHub.Cache.Services
         private const string GITHUB_API_URL = "https://api.github.com";
 
         private readonly IGitHubCacheServiceSettingsProvider _settings;
+        private readonly IGitHubCacheServiceHelper _gitHubCacheServiceHelper;
         private readonly IEmailHelper _emailHelper;
 
         /// <summary>
         /// Initialises a new instance of the WebClientService class.
         /// </summary>
-        public WebClientService(IGitHubCacheServiceSettingsProvider settings, IEmailHelper emailHelper)
+        /// <param name="settings"><c>GitHubCacheServiceSettingsProvider</c> instance.</param>
+        /// <param name="gitHubCacheServiceHelper"><c>GitHubCacheServiceHelper</c> instance.</param>
+        /// <param name="emailHelper"><c>EmailHelper</c> instance.</param>
+        public WebClientService(IGitHubCacheServiceSettingsProvider settings, IGitHubCacheServiceHelper gitHubCacheServiceHelper, IEmailHelper emailHelper)
         {
             if (settings == null)
             {
                 throw new ArgumentNullException("settings");
             }
             this._settings = settings;
+
+            if (gitHubCacheServiceHelper == null)
+            {
+                throw new ArgumentNullException("gitHubCacheServiceHelper");
+            }
+            this._gitHubCacheServiceHelper = gitHubCacheServiceHelper;
 
             if (emailHelper == null)
             {
@@ -39,16 +49,12 @@ namespace Aliencube.GitHub.Cache.Services
         }
 
         /// <summary>
-        /// Gets the configuration settings.
-        /// </summary>
-
-        /// <summary>
         /// Gets the <c>HttpResponseMessage</c> instance.
         /// </summary>
         /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
         /// <param name="validationService"><c>ValidationService</c> instance.</param>
         /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
-        public HttpResponseMessage GetResponseMessage(HttpRequestMessage request, IValidationService validationService)
+        public HttpResponseMessage GetResponseMessage(HttpRequestMessage request, IServiceValidator validationService)
         {
             var url = request.RequestUri.ParseQueryString().Get("url");
             if (!validationService.ValidateAllValuesRequired(url))
@@ -88,7 +94,7 @@ namespace Aliencube.GitHub.Cache.Services
             HttpResponseMessage response;
             try
             {
-                var validated = this.ValidateRequest(request, uri);
+                var validated = this._gitHubCacheServiceHelper.ValidateRequest(request);
                 if (!validated)
                 {
                     throw new InvalidOperationException("Unauthorised");
@@ -152,67 +158,6 @@ namespace Aliencube.GitHub.Cache.Services
                 this._emailHelper.Send(@from, to, subject, body);
             }
             return response;
-        }
-
-        /// <summary>
-        /// Validates whether the request comes with proper values or not.
-        /// </summary>
-        /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
-        /// <param name="uri"><c>Uri</c> to send the request.</param>
-        /// <returns>Returns <c>True</c>, if the request is valid; otherwise returns <c>False</c>.</returns>
-        public bool ValidateRequest(HttpRequestMessage request, Uri uri)
-        {
-            var validated = true;
-            switch (this._settings.AuthenticationType)
-            {
-                case AuthenticationType.Basic:
-                    validated = this.ValidateBasicAuthentication(uri.OriginalString);
-                    break;
-
-                case AuthenticationType.AuthenticationKey:
-                    validated = this.ValidateAuthorisationHeader(request.Headers.Authorization);
-                    break;
-            }
-
-            return validated;
-        }
-
-        /// <summary>
-        /// Validates whether the username and password are included in the URL segment or not.
-        /// </summary>
-        /// <param name="url">URL segment.</param>
-        /// <returns>Returns <c>True</c>, if the username and password are included in the URL segment; otherwise returns <c>False</c>.</returns>
-        public bool ValidateBasicAuthentication(string url)
-        {
-            var segments = url.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-            var validated = segments[1].Contains(":") && segments[1].Contains("@");
-            return validated;
-        }
-
-        /// <summary>
-        /// Validates whether the authentication key exists in a correct format or not.
-        /// </summary>
-        /// <param name="header">Authentication header value.</param>
-        /// <returns>Returns <c>True</c>, if the authentication key exists in a correct format; otherwise returns <c>False</c>.</returns>
-        public bool ValidateAuthorisationHeader(AuthenticationHeaderValue header)
-        {
-            if (header == null)
-            {
-                return false;
-            }
-
-            var token = header.ToString();
-            if (String.IsNullOrWhiteSpace(token))
-            {
-                return false;
-            }
-
-            if (!token.StartsWith("token "))
-            {
-                return false;
-            }
-
-            return true;
         }
 
         /// <summary>

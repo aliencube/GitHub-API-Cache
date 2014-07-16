@@ -1,4 +1,5 @@
 using Aliencube.GitHub.Cache.Services;
+using Aliencube.GitHub.Cache.Services.Helpers;
 using Aliencube.GitHub.Cache.Services.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
@@ -11,13 +12,15 @@ namespace Aliencube.GitHub.Cache.WebApi.Tests
         #region SetUp / TearDown
 
         private IGitHubCacheServiceSettingsProvider _settings;
-        private IEmailHelper _helper;
+        private IGitHubCacheServiceHelper _serviceHelper;
+        private IEmailHelper _emailHelper;
         private IWebClientService _service;
 
         [SetUp]
         public void Init()
         {
-            this._helper = Substitute.For<IEmailHelper>();
+            this._emailHelper = Substitute.For<IEmailHelper>();
+            this._serviceHelper = Substitute.For<IGitHubCacheServiceHelper>();
         }
 
         [TearDown]
@@ -26,8 +29,11 @@ namespace Aliencube.GitHub.Cache.WebApi.Tests
             if (this._service != null)
                 this._service.Dispose();
 
-            if (this._helper != null)
-                this._helper.Dispose();
+            if (this._emailHelper != null)
+                this._emailHelper.Dispose();
+
+            if (this._serviceHelper != null)
+                this._serviceHelper.Dispose();
         }
 
         #endregion SetUp / TearDown
@@ -38,7 +44,8 @@ namespace Aliencube.GitHub.Cache.WebApi.Tests
         public void Test()
         {
             this._settings = Substitute.For<IGitHubCacheServiceSettingsProvider>();
-            this._service = new WebClientService(this._settings, this._helper);
+
+            this._service = new WebClientService(this._settings, this._serviceHelper, this._emailHelper);
         }
 
         #endregion Tests
