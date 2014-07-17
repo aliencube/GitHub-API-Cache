@@ -1,4 +1,5 @@
-﻿using Aliencube.GitHub.Cache.Services.Exceptions;
+﻿using Aliencube.AlienCache.WebApi.Interfaces;
+using Aliencube.GitHub.Cache.Services.Exceptions;
 using Aliencube.GitHub.Cache.Services.Interfaces;
 using Newtonsoft.Json.Linq;
 using System;
@@ -17,7 +18,8 @@ namespace Aliencube.GitHub.Cache.Services
     {
         private const string GITHUB_API_URL = "https://api.github.com";
 
-        private readonly IGitHubCacheServiceSettingsProvider _settings;
+        private readonly IWebApiCacheConfigurationSettingsProvider _webApiCacheSettings;
+        private readonly IGitHubCacheServiceSettingsProvider _gitHubCacheSettings;
         private readonly IServiceValidator _parameterValidator;
         private readonly IGitHubCacheServiceHelper _gitHubCacheServiceHelper;
         private readonly IEmailHelper _emailHelper;
@@ -25,20 +27,28 @@ namespace Aliencube.GitHub.Cache.Services
         /// <summary>
         /// Initialises a new instance of the WebClientService class.
         /// </summary>
-        /// <param name="settings"><c>GitHubCacheServiceSettingsProvider</c> instance.</param>
+        /// <param name="webApiCacheSettings"><c>WebApiCacheConfigurationSettingsProvider</c> instance.</param>
+        /// <param name="gitHubCacheSettings"><c>GitHubCacheServiceSettingsProvider</c> instance.</param>
         /// <param name="parameterValidator"><c>ServiceValidator</c> instance.</param>
         /// <param name="gitHubCacheServiceHelper"><c>GitHubCacheServiceHelper</c> instance.</param>
         /// <param name="emailHelper"><c>EmailHelper</c> instance.</param>
-        public WebClientService(IGitHubCacheServiceSettingsProvider settings,
+        public WebClientService(IWebApiCacheConfigurationSettingsProvider webApiCacheSettings,
+                                IGitHubCacheServiceSettingsProvider gitHubCacheSettings,
                                 IServiceValidator parameterValidator,
                                 IGitHubCacheServiceHelper gitHubCacheServiceHelper,
                                 IEmailHelper emailHelper)
         {
-            if (settings == null)
+            if (webApiCacheSettings == null)
             {
-                throw new ArgumentNullException("settings");
+                throw new ArgumentNullException("webApiCacheSettings");
             }
-            this._settings = settings;
+            this._webApiCacheSettings = webApiCacheSettings;
+
+            if (gitHubCacheSettings == null)
+            {
+                throw new ArgumentNullException("gitHubCacheSettings");
+            }
+            this._gitHubCacheSettings = gitHubCacheSettings;
 
             if (parameterValidator == null)
             {
@@ -112,9 +122,9 @@ namespace Aliencube.GitHub.Cache.Services
 
                 using (var client = new WebClient())
                 {
-                    if (this._settings.UseProxy)
+                    if (this._gitHubCacheSettings.UseProxy)
                     {
-                        var proxy = new WebProxy(this._settings.ProxyUrl, this._settings.BypassOnLocal);
+                        var proxy = new WebProxy(this._gitHubCacheSettings.ProxyUrl, this._gitHubCacheSettings.BypassOnLocal);
                         client.Proxy = proxy;
                     }
 
@@ -129,7 +139,7 @@ namespace Aliencube.GitHub.Cache.Services
                     }
                     client.Headers.Add(HttpRequestHeader.Accept, String.Join(",", accepts));
 
-                    if (this._settings.AuthenticationType == AuthenticationType.AuthenticationKey)
+                    if (this._gitHubCacheSettings.AuthenticationType == AuthenticationType.AuthenticationKey)
                     {
                         client.Headers.Add(HttpRequestHeader.Authorization, request.Headers.Authorization.ToString());
                     }
@@ -156,13 +166,13 @@ namespace Aliencube.GitHub.Cache.Services
             {
                 response = this.GetErrorReponse(request, ex);
 
-                if (!this._settings.UseErrorLogEmail)
+                if (!this._gitHubCacheSettings.UseErrorLogEmail)
                 {
                     return response;
                 }
 
-                var from = this._settings.ErrorLogEmailFrom;
-                var to = this._settings.ErrorLogEmailTo;
+                var from = this._gitHubCacheSettings.ErrorLogEmailFrom;
+                var to = this._gitHubCacheSettings.ErrorLogEmailTo;
                 var subject = String.Format("GitHub API Cache - {0}", ex.Message);
                 var body = String.Format("{0}\n{1}", ex.Message, ex.StackTrace);
                 this._emailHelper.Send(@from, to, subject, body);

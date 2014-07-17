@@ -1,4 +1,5 @@
-﻿using Aliencube.GitHub.Cache.Services.Interfaces;
+﻿using Aliencube.AlienCache.WebApi.Interfaces;
+using Aliencube.GitHub.Cache.Services.Interfaces;
 using Aliencube.GitHub.Cache.Services.Validators;
 using System;
 using System.Net.Http;
@@ -10,19 +11,28 @@ namespace Aliencube.GitHub.Cache.Services.Helpers
     /// </summary>
     public class GitHubCacheServiceHelper : IGitHubCacheServiceHelper
     {
-        private readonly IGitHubCacheServiceSettingsProvider _settings;
+        private readonly IWebApiCacheConfigurationSettingsProvider _webApiCacheSettings;
+        private readonly IGitHubCacheServiceSettingsProvider _gitHubCacheSettings;
 
         /// <summary>
         /// Initialises a new instance of the GitHubCacheServiceHelper class.
         /// </summary>
-        /// <param name="settings"><c>GitHubCacheServiceSettingsProvider</c> instance.</param>
-        public GitHubCacheServiceHelper(IGitHubCacheServiceSettingsProvider settings)
+        /// <param name="webApiCacheSettings"><c>WebApiCacheConfigurationSettingsProvider</c> instance.</param>
+        /// <param name="gitHubCacheSettings"><c>GitHubCacheServiceSettingsProvider</c> instance.</param>
+        public GitHubCacheServiceHelper(IWebApiCacheConfigurationSettingsProvider webApiCacheSettings,
+                                        IGitHubCacheServiceSettingsProvider gitHubCacheSettings)
         {
-            if (settings == null)
+            if (webApiCacheSettings == null)
             {
-                throw new ArgumentNullException("settings");
+                throw new ArgumentNullException("webApiCacheSettings");
             }
-            this._settings = settings;
+            this._webApiCacheSettings = webApiCacheSettings;
+
+            if (gitHubCacheSettings == null)
+            {
+                throw new ArgumentNullException("gitHubCacheSettings");
+            }
+            this._gitHubCacheSettings = gitHubCacheSettings;
         }
 
         /// <summary>

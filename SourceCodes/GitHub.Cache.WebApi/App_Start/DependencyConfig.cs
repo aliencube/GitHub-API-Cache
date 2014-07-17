@@ -1,7 +1,11 @@
-﻿using Aliencube.GitHub.Cache.Services;
+﻿using Aliencube.AlienCache.WebApi;
+using Aliencube.AlienCache.WebApi.Interfaces;
+using Aliencube.GitHub.Cache.Services;
 using Aliencube.GitHub.Cache.Services.Helpers;
 using Aliencube.GitHub.Cache.Services.Interfaces;
 using Aliencube.GitHub.Cache.Services.Validators;
+using Aliencube.WebApi.RequireHttps;
+using Aliencube.WebApi.RequireHttps.Interfaces;
 using Autofac;
 using Autofac.Integration.WebApi;
 using System.Reflection;
@@ -29,6 +33,8 @@ namespace Aliencube.GitHub.Cache.WebApi
 
         private static void RegisterSettingsProviders(ContainerBuilder builder)
         {
+            builder.RegisterType<WebApiCacheConfigurationSettingsProvider>().As<IWebApiCacheConfigurationSettingsProvider>().PropertiesAutowired();
+            builder.RegisterType<RequireHttpsConfigurationSettingsProvider>().As<IRequireHttpsConfigurationSettingsProvider>().PropertiesAutowired();
             builder.RegisterType<GitHubCacheServiceSettingsProvider>().As<IGitHubCacheServiceSettingsProvider>().PropertiesAutowired();
         }
 
