@@ -12,16 +12,26 @@ namespace Aliencube.GitHub.Cache.Services.Validators
         /// Validates the authentication request.
         /// </summary>
         /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
-        /// <param name="uri"><c>Uri</c> to send the request.</param>
         /// <returns>Returns <c>True</c>, if validated; otherwise returns <c>False</c>.</returns>
-        public override bool ValidateAuthentication(HttpRequestMessage request, Uri uri)
+        public override bool ValidateAuthentication(HttpRequestMessage request)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException("request");
+            }
+
+            var uri = request.RequestUri;
             if (uri == null)
             {
-                throw new ArgumentNullException("uri");
+                return false;
             }
 
             var url = uri.OriginalString;
+            if (String.IsNullOrWhiteSpace(url))
+            {
+                return false;
+            }
+
             var segments = url.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
             var validated = segments[1].Contains(":") && segments[1].Contains("@");
             return validated;

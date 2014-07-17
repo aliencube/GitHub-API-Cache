@@ -12,9 +12,8 @@ namespace Aliencube.GitHub.Cache.Services.Interfaces
         /// Validates the authentication request.
         /// </summary>
         /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
-        /// <param name="uri"><c>Uri</c> to send the request.</param>
         /// <returns>Returns <c>True</c>, if validated; otherwise returns <c>False</c>.</returns>
-        bool ValidateAuthentication(HttpRequestMessage request, Uri uri);
+        bool ValidateAuthentication(HttpRequestMessage request);
 
         /// <summary>
         /// Validates whether all values are required.

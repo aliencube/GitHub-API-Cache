@@ -13,9 +13,8 @@ namespace Aliencube.GitHub.Cache.Services.Validators
         /// Validates the authentication request.
         /// </summary>
         /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
-        /// <param name="uri"><c>Uri</c> to send the request.</param>
         /// <returns>Returns <c>True</c>, if validated; otherwise returns <c>False</c>.</returns>
-        public virtual bool ValidateAuthentication(HttpRequestMessage request, Uri uri)
+        public virtual bool ValidateAuthentication(HttpRequestMessage request)
         {
             return true;
         }
@@ -31,11 +30,11 @@ namespace Aliencube.GitHub.Cache.Services.Validators
         }
 
         /// <summary>
-        /// Creates the BaseAuthValidator instance based on the AuthenticationType value.
+        /// Creates the <c>BaseAuthenticationValidator</c> instance based on the <c>AuthenticationType</c> value.
         /// </summary>
         /// <param name="authType"><c>AuthenticationType</c> value.</param>
-        /// <returns>Returns the BaseAuthValidator instance.</returns>
-        public static BaseAuthenticationValidator CreateInstance(AuthenticationType authType)
+        /// <returns>Returns the <c>BaseAuthenticationValidator</c> instance.</returns>
+        public static IServiceValidator CreateInstance(AuthenticationType authType)
         {
             switch (authType)
             {
