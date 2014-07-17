@@ -9,11 +9,17 @@ namespace Aliencube.GitHub.Cache.Services.Interfaces
     public interface IGitHubCacheServiceHelper : IDisposable
     {
         /// <summary>
-        /// Validates whether the request comes with proper values or not.
+        /// Validates the authentication request.
         /// </summary>
         /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
-        /// <param name="uri"><c>Uri</c> to send the request.</param>
         /// <returns>Returns <c>True</c>, if the request is valid; otherwise returns <c>False</c>.</returns>
-        bool ValidateRequest(HttpRequestMessage request, Uri uri);
+        bool ValidateAuthentication(HttpRequestMessage request);
+
+        /// <summary>
+        /// Validates the request URL.
+        /// </summary>
+        /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
+        /// <returns>Returns <c>True</c>, if the request is valid; otherwise returns <c>False</c>.</returns>
+        bool ValidateRequestUrl(HttpRequestMessage request);
     }
 }

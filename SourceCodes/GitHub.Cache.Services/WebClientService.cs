@@ -76,48 +76,25 @@ namespace Aliencube.GitHub.Cache.Services
         /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
         public HttpResponseMessage GetResponseMessage(HttpRequestMessage request)
         {
-            var url = request.RequestUri.ParseQueryString().Get("url");
-            if (!this._parameterValidator.ValidateAllValuesRequired(url))
+            if (request == null)
             {
-                return request.CreateResponse(HttpStatusCode.NotFound);
+                throw new ArgumentNullException("request");
             }
 
-            if (url.StartsWith("/"))
-            {
-                url = url.Substring(1);
-            }
-            url = String.Join("/", GITHUB_API_URL, url);
-            var response = this.GetResponse(request, url);
-            return response;
-        }
-
-        /// <summary>
-        /// Gets the <c>HttpResponseMessage</c> instance.
-        /// </summary>
-        /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
-        /// <param name="url">URL to send the request.</param>
-        /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
-        public HttpResponseMessage GetResponse(HttpRequestMessage request, string url)
-        {
-            var uri = new Uri(url);
-            return this.GetResponse(request, uri);
-        }
-
-        /// <summary>
-        /// Gets the <c>HttpResponseMessage</c> instance.
-        /// </summary>
-        /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
-        /// <param name="uri"><c>Uri</c> to send the request.</param>
-        /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
-        public HttpResponseMessage GetResponse(HttpRequestMessage request, Uri uri)
-        {
             HttpResponseMessage response;
             try
             {
-                var validated = this._gitHubCacheServiceHelper.ValidateRequest(request, uri);
+                var validated = this._gitHubCacheServiceHelper.ValidateAuthentication(request);
                 if (!validated)
                 {
                     throw new InvalidOperationException("Unauthorised");
+                }
+
+                validated = this._gitHubCacheServiceHelper.ValidateRequestUrl(request);
+                if (!validated)
+                {
+                    response = request.CreateResponse(HttpStatusCode.NotFound);
+                    return response;
                 }
 
                 using (var client = new WebClient())
