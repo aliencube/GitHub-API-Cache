@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Net.Mail;
 
 namespace Aliencube.GitHub.Cache.Services.Interfaces
@@ -9,6 +10,14 @@ namespace Aliencube.GitHub.Cache.Services.Interfaces
     /// </summary>
     public interface IEmailHelper : IDisposable
     {
+        /// <summary>
+        /// Gets the body content in HTML.
+        /// </summary>
+        /// <param name="request"><c>HttpRequestMessage</c> instance.</param>
+        /// <param name="ex">Exception instance.</param>
+        /// <returns>Returns the body content in HTML.</returns>
+        string GetBodyContent(HttpRequestMessage request, Exception ex);
+
         /// <summary>
         /// Sends an email.
         /// </summary>
