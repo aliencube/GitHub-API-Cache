@@ -18,10 +18,10 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
         /// <summary>
         /// Initialises a new instance of the RefController class.
         /// </summary>
-        /// <param name="validationService"><c>ValidationService</c> instance.</param>
+        /// <param name="parameterValidator"><c>ServiceValidator</c> instance.</param>
         /// <param name="webClientService"><c>WebClientService</c> instance.</param>
-        public RefController(IValidationService validationService, IWebClientService webClientService)
-            : base(validationService, webClientService)
+        public RefController(IServiceValidator parameterValidator, IWebClientService webClientService)
+            : base(parameterValidator, webClientService)
         {
         }
 
@@ -58,7 +58,7 @@ namespace Aliencube.GitHub.Cache.WebApi.Controllers
         /// <returns>Returns the <c>HttpResponseMessage</c> instance.</returns>
         private HttpResponseMessage GetResponseMessage(string user, string repo, string branch)
         {
-            if (!this.ValidationService.ValidateAllValuesRequired(user, repo, branch))
+            if (!this.ParameterValidator.ValidateAllValuesRequired(user, repo, branch))
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }

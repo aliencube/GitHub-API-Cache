@@ -1,6 +1,7 @@
 ﻿using Aliencube.GitHub.Cache.Services;
 using Aliencube.GitHub.Cache.Services.Helpers;
 using Aliencube.GitHub.Cache.Services.Interfaces;
+using Aliencube.GitHub.Cache.Services.Validators;
 using Autofac;
 using Autofac.Integration.WebApi;
 using System.Reflection;
@@ -14,7 +15,9 @@ namespace Aliencube.GitHub.Cache.WebApi
         {
             var builder = new ContainerBuilder();
 
+            RegisterSettingsProviders(builder);
             RegisterHelpers(builder);
+            RegisterValidators(builder);
             RegisterServices(builder);
             RegisterControllers(builder);
 
@@ -24,14 +27,24 @@ namespace Aliencube.GitHub.Cache.WebApi
             GlobalConfiguration.Configuration.DependencyResolver = resolver;
         }
 
+        private static void RegisterSettingsProviders(ContainerBuilder builder)
+        {
+            builder.RegisterType<GitHubCacheServiceSettingsProvider>().As<IGitHubCacheServiceSettingsProvider>().PropertiesAutowired();
+        }
+
         private static void RegisterHelpers(ContainerBuilder builder)
         {
             builder.RegisterType<EmailHelper>().As<IEmailHelper>().PropertiesAutowired();
+            builder.RegisterType<GitHubCacheServiceHelper>().As<IGitHubCacheServiceHelper>().PropertiesAutowired();
+        }
+
+        private static void RegisterValidators(ContainerBuilder builder)
+        {
+            builder.RegisterType<ParameterValidator>().As<IServiceValidator>().PropertiesAutowired();
         }
 
         private static void RegisterServices(ContainerBuilder builder)
         {
-            builder.RegisterType<ValidationService>().As<IValidationService>().PropertiesAutowired();
             builder.RegisterType<WebClientService>().As<IWebClientService>().PropertiesAutowired();
         }
 

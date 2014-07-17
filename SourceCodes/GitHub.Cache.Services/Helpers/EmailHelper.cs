@@ -1,5 +1,4 @@
 ﻿using Aliencube.GitHub.Cache.Services.Interfaces;
-using Aliencube.GitHub.Cache.Services.Properties;
 using System;
 using System.Collections.Generic;
 using System.Net.Mail;
@@ -12,14 +11,19 @@ namespace Aliencube.GitHub.Cache.Services.Helpers
     /// </summary>
     public class EmailHelper : IEmailHelper
     {
-        private readonly Settings _settings;
+        private readonly IGitHubCacheServiceSettingsProvider _settings;
 
         /// <summary>
         /// Initialises a new instance of the EmailHelper class.
         /// </summary>
-        public EmailHelper()
+        /// <param name="settings"><c>GitHubCacheServiceSettingsProvider</c> instance.</param>
+        public EmailHelper(IGitHubCacheServiceSettingsProvider settings)
         {
-            this._settings = Settings.Default;
+            if (settings == null)
+            {
+                throw new ArgumentNullException("settings");
+            }
+            this._settings = settings;
         }
 
         /// <summary>

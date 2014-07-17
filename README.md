@@ -99,11 +99,23 @@ In order to change some configurations, `Web.config` needs to be touched, especi
     <setting name="UseAbsoluteUrl" serializeAs="String">
         <value>False</value>
     </setting>
+    <setting name="UseQueryStringAsKey" serializeAs="String">
+        <value>False</value>
+    </setting>
+    <setting name="QueryStringKey" serializeAs="String">
+        <value />
+    </setting>
+    <setting name="CacheableStatusCodes" serializeAs="String">
+        <value>200,304</value>
+    </setting>
 </Aliencube.AlienCache.WebApi.Properties.Settings>
 ```
 
 * `TimeSpan`: Duration for how long the cache value is alive, in seconds. Default value is `60`.
 * `UseAbsoluteUrl`: If it is set to `true`, the cache key will use the fully qualified URL to store cache value. Default value is `false`.
+* `UseQueryStringAsKey`: If it is set to `true`, the cache key will use query string value corresponding to a specified key. Default value is `false`.
+* `QueryStringKey`: The key from query string to consider cache key. If `UseQueryStringAsKey` is `false`, this value is ignored.
+* `CacheableStatusCodes`: This is the list of HTTP status codes, delimited by comma, that allow to store into the cache. Default value is `200,304` that is equivalent to `OK` and `Not Modified`.
 
 
 ### `Aliencube.GitHub.Cache.Services.Properties.Settings` ###
@@ -164,13 +176,17 @@ In order to change some configurations, `Web.config` needs to be touched, especi
 
 ```xml
 <Aliencube.WebApi.RequireHttps.Properties.Settings>
-    <setting name="UseHttps" serializeAs="String">
+    <setting name="BypassHttps" serializeAs="String">
         <value>False</value>
+    </setting>
+    <setting name="ApplicationServiceProviders" serializeAs="String">
+        <value />
     </setting>
 </Aliencube.WebApi.RequireHttps.Properties.Settings>
 ```
 
-* `UseHttps`: If this is set to `true`, only HTTPS connection can send requests.
+* `BypassHttps`: If it is set to `true`, the `RequireHttpsAttribute` instance assumes the request is over HTTPS connection. Default value is `false`.
+* `ApplicationServiceProviders`: In case that additional check based on application service provider is required, this should be defined. Currently (version 1.5.0.0), this value can be either, `Default` or `AppHarbor`. Default value is `nil`.
 
 
 ## SMTP ##
