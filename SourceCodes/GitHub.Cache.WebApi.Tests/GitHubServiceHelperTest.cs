@@ -2,6 +2,7 @@ using Aliencube.AlienCache.WebApi.Interfaces;
 using Aliencube.GitHub.Cache.Services;
 using Aliencube.GitHub.Cache.Services.Helpers;
 using Aliencube.GitHub.Cache.Services.Interfaces;
+using Aliencube.GitHub.Cache.Services.Validators;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
@@ -77,6 +78,74 @@ namespace Aliencube.GitHub.Cache.WebApi.Tests
 
             this._helper = new GitHubCacheServiceHelper(this._webApiCacheSettings, this._gitHubCacheSettings, this._parameterValidator);
             this._helper.ValidateAuthentication(this._request).Should().Be(expected);
+        }
+
+        [Test]
+        [TestCase("/v3", "url=repo/abc/def", true, "url", true)]
+        [TestCase("/v3", null, true, "url", false)]
+        [TestCase("/v3", "url=repo/abc/def", true, "key", false)]
+        [TestCase("/v3", "url=repo/abc/def", false, "url", true)]
+        public void ValidateRequestUrl_GivenUrl_ReturnResult(string path, string queryString, bool useQueryStringAsKey, string queryStringKey, bool expected)
+        {
+            var url = String.Format("http://localhost{0}{1}", path, String.IsNullOrWhiteSpace(queryString) ? String.Empty : "?" + queryString);
+            var uri = new Uri(url);
+
+            this._request = new HttpRequestMessage(new HttpMethod("GET"), uri);
+            this._webApiCacheSettings.UseQueryStringAsKey.Returns(useQueryStringAsKey);
+            this._webApiCacheSettings.QueryStringKey.Returns(queryStringKey);
+            this._parameterValidator = new ParameterValidator();
+
+            this._helper = new GitHubCacheServiceHelper(this._webApiCacheSettings, this._gitHubCacheSettings, this._parameterValidator);
+            this._helper.ValidateRequestUrl(this._request).Should().Be(expected);
+        }
+
+        [Test]
+        [TestCase("/v3", "url=repo/abc/def", true, "url")]
+        [TestCase("/v3", "url=repo/abc/def", false, "url")]
+        public void GetRequestUri_GivenRequest_ReturnUrl(string path, string queryString, bool useQueryStringAsKey, string queryStringKey)
+        {
+            var url = String.Format("http://localhost{0}{1}", path, String.IsNullOrWhiteSpace(queryString) ? String.Empty : "?" + queryString);
+            var uri = new Uri(url);
+
+            this._request = new HttpRequestMessage(new HttpMethod("GET"), uri);
+            this._webApiCacheSettings.UseQueryStringAsKey.Returns(useQueryStringAsKey);
+            this._webApiCacheSettings.QueryStringKey.Returns(queryStringKey);
+            this._parameterValidator = new ParameterValidator();
+
+            var expected = String.Format("https://api.github.com{0}",
+                                         (!this._webApiCacheSettings.UseQueryStringAsKey
+                                              ? this._request.RequestUri.AbsolutePath
+                                              : (useQueryStringAsKey
+                                                     ? "/" + this._request.RequestUri.ParseQueryString().Get(queryStringKey)
+                                                     : String.Empty)));
+            this._helper = new GitHubCacheServiceHelper(this._webApiCacheSettings, this._gitHubCacheSettings, this._parameterValidator);
+            this._helper.GetRequestUri(this._request).OriginalString.Should().Be(expected);
+        }
+
+        [Test]
+        [TestCase("/repo?callback=jQuery_123456", true)]
+        [TestCase("/repo?key=jQuery_123456", false)]
+        [TestCase("/repo", false)]
+        public void IsJsonpRequest_GivenRequest_ReturnResult(string url, bool expected)
+        {
+            var uri = new Uri(String.Format("http://localhost{0}", url));
+            this._request = new HttpRequestMessage(new HttpMethod("GET"), uri);
+
+            this._helper = new GitHubCacheServiceHelper(this._webApiCacheSettings, this._gitHubCacheSettings, this._parameterValidator);
+            this._helper.IsJsonpRequest(this._request).Should().Be(expected);
+        }
+
+        [Test]
+        [TestCase("/repo", "jQuery_123456", "{\"key\": \"value\"}")]
+        [TestCase("/repo", "jQuery_123456", null)]
+        public void WrapJsonpCallback_GivenRequest_ReturnResult(string url, string callback, string value)
+        {
+            var uri = new Uri(String.Format("http://localhost{0}?callback={1}", url, callback));
+            this._request = new HttpRequestMessage(new HttpMethod("GET"), uri);
+
+            var expected = String.Format("{0}({1})", callback, value);
+            this._helper = new GitHubCacheServiceHelper(this._webApiCacheSettings, this._gitHubCacheSettings, this._parameterValidator);
+            this._helper.WrapJsonpCallback(this._request, value).Should().Be(expected);
         }
 
         #endregion Tests
